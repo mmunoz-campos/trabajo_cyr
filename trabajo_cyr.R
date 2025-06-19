@@ -4,13 +4,10 @@ setwd("/Users/mmunozcampos/Documents/Comp y reg/trabajo_cyr")
 
 library(dplyr)
 library(zoo)
+library(ggplot2)
 
 base1 <- readxl::read_excel("base_1_caracteristicas.xlsx")
 base2 <- readxl::read_excel("base_2_opcion_alternativa.xlsx")
-fonasa_df <- readxl::read_excel("Códigos Fonasa.xlsx")
-
-
-summary(as.factor(fonasa_df$grupo))
 
 # Creamos Year y realizamos merge
 base2$year <- 2001
@@ -39,5 +36,60 @@ for (i in 0:9) {
 
 # cambiamos el nombre a crecimiento anual para no confundirnos
 base1$pop_growth_rate_yr <- base1$crecimiento_anual
-base1 <- base1 %>%
+df <- base1 %>%
   select(-crecimiento_anual)
+
+rm(city, i, pob_in, rate, yr, base1)
+
+# ----
+# Interpolacion
+# ----
+# Creamos una base de datos alternativa con los NA correspondientes.
+# Step 1: List of all years and clinics
+all_cities <- unique(df$ciudad)
+all_years <- unique(df$year)
+all_clinics <- unique(df$prestador)
+
+# Step 2: Create the complete grid
+complete_grid <- tidyr::expand_grid(ciudad = all_cities, year = all_years, prestador = all_clinics)
+
+# Step 3: Join and fill in missing rows with NAs
+df_interp <- complete_grid %>%
+  left_join(df, by = c("ciudad", "year", "prestador"))
+
+df <- df_interp
+rm(complete_grid, all_cities, all_years, all_clinics)
+
+#preparamos la interpolacion
+df_interp$tecnologia_alta[df_interp$tecnologia_alta == 0] <- 0.01
+
+# Interpolamos valores faltantes
+df_interp <- df_interp %>%
+  arrange(ciudad, prestador, year) %>%
+  group_by(ciudad, prestador) %>%
+  mutate(across(
+    where(is.numeric),
+    #solamente rellenamos na (no cambiamos los otros)
+    ~ ifelse(is.na(.x),
+             exp(na.spline(log(.x), x = year, na.rm = FALSE)), .x)
+  )) %>%
+  ungroup()
+
+# Volvemos a hacer tecnologia_alta una dummy
+df_interp$tecnologia_alta[df_interp$tecnologia_alta < 1] <- 0
+
+df_interp <- df_interp %>% arrange(ciudad, year, prestador)
+
+# ----
+# PLOT
+df_gh <- df_interp %>%
+  filter(ciudad == 2 & num_operados>0)
+
+ggplot(df_gh, aes(x = year, y = num_operados, color = prestador)) +
+  geom_line(na.rm = TRUE) +
+  theme_minimal() +
+  labs(title = "Numeric Variables Across Years by Prestador")
+# End
+
+writexl::write_xlsx(df_interp, path = "df_p1_interp.xlsx")
+writexl::write_xlsx(df, path = "df_p1.xlsx")
