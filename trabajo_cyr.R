@@ -93,40 +93,40 @@ ggplot(df_gh, aes(x = year, y = num_operados, color = prestador)) +
 # ----
 # Market shares
 # ----
-df_interp$mkt_total <- NA
+df_interp$mkt_operacion <- NA
 
 for (city in unique(df_interp$ciudad)) {
   for (yr in unique(df_interp$year)) {
-    df_interp$mkt_total[df_interp$year == yr & df_interp$ciudad == city] <- df_interp %>%
+    df_interp$mkt_operacion[df_interp$year == yr & df_interp$ciudad == city] <- df_interp %>%
       filter(year == yr, ciudad == city) %>%
-      summarise(mkt_total = sum(num_operados, na.rm = TRUE)) %>%
-      pull(mkt_total)
+      summarise(mkt_operacion = sum(num_operados, na.rm = TRUE)) %>%
+      pull(mkt_operacion)
   }
 }
 rm(city, yr)
 
-df_interp$mkt_share_no_outop <- df_interp$num_operados/df_interp$mkt_total
+df_interp$mkt_share_no_outop <- df_interp$num_operados/df_interp$mkt_operacion
 
-df_interp$mkt_total <- df_interp$mkt_total + df_interp$poblacion_aprox
+df_interp$mkt_total <- df_interp$mkt_operacion + df_interp$poblacion_aprox
 df_interp$mkt_share <- df_interp$num_operados/df_interp$mkt_total
 df_interp$outside_op_mktsh <- df_interp$poblacion_aprox/df_interp$mkt_total
 
 # repetimos para el original
-df$mkt_total <- NA
+df$mkt_operacion <- NA
 
 for (city in unique(df$ciudad)) {
   for (yr in unique(df$year)) {
-    df$mkt_total[df$year == yr & df$ciudad == city] <- df %>%
+    df$mkt_operacion[df$year == yr & df$ciudad == city] <- df %>%
       filter(year == yr, ciudad == city) %>%
-      summarise(mkt_total = sum(num_operados, na.rm = TRUE)) %>%
-      pull(mkt_total)
+      summarise(mkt_operacion = sum(num_operados, na.rm = TRUE)) %>%
+      pull(mkt_operacion)
   }
 }
 rm(city, yr)
 
-df$mkt_share_no_outop <- df$num_operados/df$mkt_total
+df$mkt_share_no_outop <- df$num_operados/df$mkt_operacion
 
-df$mkt_total <- df$mkt_total + df$poblacion_aprox
+df$mkt_total <- df$mkt_operacion + df$poblacion_aprox
 df$mkt_share <- df$num_operados/df$mkt_total
 df$outside_op_mktsh <- df$poblacion_aprox/df$mkt_total
 # ----

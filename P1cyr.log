@@ -2,16 +2,80 @@
       name:  <unnamed>
        log:  /Users/mmunozcampos/Documents/Comp y reg/trabajo_cyr/P1cyr.log
   log type:  text
- opened on:  20 Jun 2025, 16:10:00
+ opened on:  20 Jun 2025, 22:58:08
 
 . 
 . import excel using "df_p1.xlsx", firstrow clear
-(15 vars, 800 obs)
+(16 vars, 800 obs)
 
 . 
 . sort ciudad year prestador
 
 . 
+. ** Vemos como evoluciona el ratio a traves del tiempo
+. preserve
+
+. gen mkt_relativo = mkt_operacion / mkt_total
+(123 missing values generated)
+
+. collapse (mean) mkt_relativo, by(year)
+
+. twoway line mkt_relativo year, ///
+>     ytitle("Total de operados respecto al mercado total (%)") ///
+>         xtitle("Año")
+
+. restore
+
+. 
+. ** Vemos como afectan las nuevas tecnologias
+. preserve 
+
+. collapse (sum) num_operados, by(year prestador)
+
+. twoway line num_operados year if prestador == "Clinica_A", ///
+>     xline(2008, lpattern(dash) lcolor(red)) ///
+>     ytitle("Número de operados") ///
+>     xtitle("Año") ///
+>     title("Evolución de Clinica A con incorporación tecnológica")
+
+. graph export newtec_CA.png, replace
+file /Users/mmunozcampos/Documents/Comp y reg/trabajo_cyr/newtec_CA.png saved as PNG format
+
+. 
+. twoway line num_operados year if prestador == "Clinica_B", ///
+>     xline(2006, lpattern(dash) lcolor(red)) ///
+>     ytitle("Número de operados") ///
+>     xtitle("Año") ///
+>     title("Evolución de Clinica B con incorporación tecnológica")
+
+. graph export newtec_CB.png, replace
+file /Users/mmunozcampos/Documents/Comp y reg/trabajo_cyr/newtec_CB.png saved as PNG format
+
+. 
+. twoway line num_operados year if prestador == "Clinica_C", ///
+>     ytitle("Número de operados") ///
+>     xtitle("Año") ///
+>     title("Evolución del Clínica C")
+
+. graph export newtec_CC.png, replace
+file /Users/mmunozcampos/Documents/Comp y reg/trabajo_cyr/newtec_CC.png saved as PNG format
+
+. 
+. twoway line num_operados year if prestador == "Publico", ///
+>     xline(2008, lpattern(dash) lcolor(red)) ///
+>     ytitle("Número de operados") ///
+>     xtitle("Año") ///
+>     title("Evolución del servicio publico con incorporación tecnológica")
+
+. graph export newtec_PB.png, replace
+file /Users/mmunozcampos/Documents/Comp y reg/trabajo_cyr/newtec_PB.png saved as PNG format
+
+. 
+. restore
+
+. 
+. 
+. ** Vemos cuales son mas similares
 . egen z_infra = std(infraestructura)
 (123 missing values generated)
 
@@ -1003,7 +1067,9 @@ cluster name: _clus_1
 . drop z_infra z_operados z_doctores z_precio
 
 . 
-. ** PRIMERA REGRESION
+. ** MODELO LOGIT
+. 
+. ** PRIMERA REGRESION (Sin instrumentos)
 . gen delta = ln(mkt_share) - ln(outside_op_mktsh)
 (123 missing values generated)
 
@@ -1044,6 +1110,13 @@ infraestructura |   .3886981   .0472889     8.22   0.000     .2960136    .481382
             rho |  .46092289   (fraction of variance due to u_i)
 ---------------------------------------------------------------------------------
 
+. outreg2 using "p1_regs.doc", ///
+>         nonotes bracket sdec(3) bdec(3) ///
+>         cttop("MCO") ///
+>         label replace word
+p1_regs.doc
+dir : seeout
+
 . xtreg delta infraestructura puntaje_doctor tecnologia_alta precio, r
 
 Random-effects GLS regression                   Number of obs     =        677
@@ -1073,8 +1146,15 @@ tecnologia_alta |   2.469815   .0755063    32.71   0.000     2.321825    2.61780
             rho |  .66926659   (fraction of variance due to u_i)
 ---------------------------------------------------------------------------------
 
+. outreg2 using "p1_regs.doc", ///
+>         nonotes bracket sdec(3) bdec(3) ///
+>         cttop("MCO") ///
+>         label append word
+p1_regs.doc
+dir : seeout
+
 . 
-. ** SEGUNDA REGRESION
+. ** SEGUNDA REGRESION (Con instrumentos)
 . egen infraestructura_otros = mean(infraestructura), by(ciudad year)
 
 . replace infraestructura_otros = infraestructura_otros - infraestructura
@@ -1087,10 +1167,49 @@ tecnologia_alta |   2.469815   .0755063    32.71   0.000     2.321825    2.61780
 (800 real changes made, 123 to missing)
 
 . 
-. ivreg2 delta (precio = infraestructura_otros puntaje_doctor) infraestructura ///
+. ** Regresión primera etapa
+. reg precio infraestructura_otros puntaje_otros infraestructura puntaje_doctor ///
+>         tecnologia_alta, r
+
+Linear regression                               Number of obs     =        677
+                                                F(5, 671)         =     813.40
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.8499
+                                                Root MSE          =     .48383
+
+---------------------------------------------------------------------------------------
+                      |               Robust
+               precio | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------------+----------------------------------------------------------------
+infraestructura_otros |  -.0009995   .0826434    -0.01   0.990    -.1632702    .1612712
+        puntaje_otros |  -.0669221   .0702327    -0.95   0.341    -.2048244    .0709803
+      infraestructura |  -.0622635     .07924    -0.79   0.432    -.2178516    .0933246
+       puntaje_doctor |   .4525618   .0674627     6.71   0.000     .3200985    .5850251
+      tecnologia_alta |   2.075706    .055457    37.43   0.000     1.966816    2.184596
+                _cons |   6.651598   .5014544    13.26   0.000      5.66699    7.636207
+---------------------------------------------------------------------------------------
+
+. test infraestructura_otros puntaje_otros
+
+ ( 1)  infraestructura_otros = 0
+ ( 2)  puntaje_otros = 0
+
+       F(  2,   671) =    0.66
+            Prob > F =    0.5192
+
+. local F1 r(F)
+
+. outreg2 using "p1_regs.doc", ///
+>         nonotes bracket sdec(3) bdec(3) ///
+>         adds("F-test excluded instrument", `F1') ///
+>         cttop("Primera Etapa") ///
+>         label append word
+p1_regs.doc
+dir : seeout
+
+. 
+. ivreg2 delta (precio = infraestructura_otros puntaje_otros) infraestructura ///
 >         puntaje_doctor, r first
-Warning - duplicate variables detected
-Duplicates:         puntaje_doctor
 
 First-stage regressions
 -----------------------
@@ -1104,17 +1223,18 @@ Number of obs =                    677
                       |               Robust
                precio | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
 ----------------------+----------------------------------------------------------------
-infraestructura_otros |   .2638318    .116056     2.27   0.023     .0359565    .4917072
-      infraestructura |    .549493   .1094715     5.02   0.000     .3345462    .7644398
-       puntaje_doctor |   .6833687    .026014    26.27   0.000     .6322903     .734447
-                _cons |   1.396035   .7259706     1.92   0.055    -.0294045    2.821475
+infraestructura_otros |   .3100216   .1362014     2.28   0.023     .0425902    .5774531
+        puntaje_otros |  -.0695304   .1164968    -0.60   0.551    -.2982719    .1592111
+      infraestructura |   .5936354   .1293242     4.59   0.000     .3397072    .8475635
+       puntaje_doctor |   .6186966   .1136637     5.44   0.000     .3955178    .8418754
+                _cons |   1.594176   .8179196     1.95   0.052    -.0118098    3.200161
 ---------------------------------------------------------------------------------------
 F test of excluded instruments:
-  F(  1,   673) =     5.17
-  Prob > F      =   0.0233
+  F(  2,   672) =     2.84
+  Prob > F      =   0.0590
 Sanderson-Windmeijer multivariate F test of excluded instruments:
-  F(  1,   673) =     5.17
-  Prob > F      =   0.0233
+  F(  2,   672) =     2.84
+  Prob > F      =   0.0590
 
 
 
@@ -1122,43 +1242,43 @@ Summary results for first-stage regressions
 -------------------------------------------
 
                                            (Underid)            (Weak id)
-Variable     | F(  1,   673)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   673)
-precio       |       5.17    0.0233 |        5.20   0.0226 |        5.17
+Variable     | F(  2,   672)  P-val | SW Chi-sq(  2) P-val | SW F(  2,   672)
+precio       |       2.84    0.0590 |        5.73   0.0571 |        2.84
 
 NB: first-stage test statistics heteroskedasticity-robust
 
 Stock-Yogo weak ID F test critical values for single endogenous regressor:
-                                   10% maximal IV size             16.38
-                                   15% maximal IV size              8.96
-                                   20% maximal IV size              6.66
-                                   25% maximal IV size              5.53
+                                   10% maximal IV size             19.93
+                                   15% maximal IV size             11.59
+                                   20% maximal IV size              8.75
+                                   25% maximal IV size              7.25
 Source: Stock-Yogo (2005).  Reproduced by permission.
 NB: Critical values are for i.i.d. errors only.
 
 Underidentification test
 Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
 Ha: matrix has rank=K1 (identified)
-Kleibergen-Paap rk LM statistic          Chi-sq(1)=4.99     P-val=0.0255
+Kleibergen-Paap rk LM statistic          Chi-sq(2)=5.42     P-val=0.0665
 
 Weak identification test
 Ho: equation is weakly identified
-Cragg-Donald Wald F statistic                                       5.18
-Kleibergen-Paap Wald rk F statistic                                 5.17
+Cragg-Donald Wald F statistic                                       2.75
+Kleibergen-Paap Wald rk F statistic                                 2.84
 
-Stock-Yogo weak ID test critical values for K1=1 and L1=1:
-                                   10% maximal IV size             16.38
-                                   15% maximal IV size              8.96
-                                   20% maximal IV size              6.66
-                                   25% maximal IV size              5.53
+Stock-Yogo weak ID test critical values for K1=1 and L1=2:
+                                   10% maximal IV size             19.93
+                                   15% maximal IV size             11.59
+                                   20% maximal IV size              8.75
+                                   25% maximal IV size              7.25
 Source: Stock-Yogo (2005).  Reproduced by permission.
 NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
 
 Weak-instrument-robust inference
 Tests of joint significance of endogenous regressors B1 in main equation
 Ho: B1=0 and orthogonality conditions are valid
-Anderson-Rubin Wald test           F(1,673)=       4.26     P-val=0.0394
-Anderson-Rubin Wald test           Chi-sq(1)=      4.28     P-val=0.0385
-Stock-Wright LM S statistic        Chi-sq(1)=      4.27     P-val=0.0388
+Anderson-Rubin Wald test           F(2,672)=       2.13     P-val=0.1194
+Anderson-Rubin Wald test           Chi-sq(2)=      4.30     P-val=0.1167
+Stock-Wright LM S statistic        Chi-sq(2)=      4.28     P-val=0.1175
 
 NB: Underidentification, weak identification and weak-identification-robust
     test statistics heteroskedasticity-robust
@@ -1166,8 +1286,8 @@ NB: Underidentification, weak identification and weak-identification-robust
 Number of observations               N  =        677
 Number of regressors                 K  =          4
 Number of endogenous regressors      K1 =          1
-Number of instruments                L  =          4
-Number of excluded instruments       L1 =          1
+Number of instruments                L  =          5
+Number of excluded instruments       L1 =          2
 
 IV (2SLS) estimation
 --------------------
@@ -1176,41 +1296,47 @@ Estimates efficient for homoskedasticity only
 Statistics robust to heteroskedasticity
 
                                                       Number of obs =      677
-                                                      F(  3,   673) =    43.67
+                                                      F(  3,   673) =    46.72
                                                       Prob > F      =   0.0000
-Total (centered) SS     =  543.9528976                Centered R2   =  -0.1188
-Total (uncentered) SS   =  13624.65214                Uncentered R2 =   0.9553
-Residual SS             =   608.558853                Root MSE      =    .9481
+Total (centered) SS     =  543.9528976                Centered R2   =  -0.0584
+Total (uncentered) SS   =  13624.65214                Uncentered R2 =   0.9577
+Residual SS             =  575.7107603                Root MSE      =    .9222
 
 ---------------------------------------------------------------------------------
                 |               Robust
           delta | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
 ----------------+----------------------------------------------------------------
-         precio |  -.7889697   .4814633    -1.64   0.101     -1.73262     .154681
-infraestructura |   .6150956   .1603574     3.84   0.000     .3008009    .9293904
- puntaje_doctor |   .6497159   .3274073     1.98   0.047     .0080093    1.291422
-          _cons |  -5.288817   1.418427    -3.73   0.000    -8.068883   -2.508751
+         precio |  -.7320989   .4562007    -1.60   0.109    -1.626236    .1620379
+infraestructura |   .5976581   .1508583     3.96   0.000     .3019814    .8933349
+ puntaje_doctor |   .6105707   .3115281     1.96   0.050    -.0000132    1.221155
+          _cons |  -5.455099   1.345705    -4.05   0.000    -8.092633   -2.817565
 ---------------------------------------------------------------------------------
-Underidentification test (Kleibergen-Paap rk LM statistic):              4.992
-                                                   Chi-sq(1) P-val =    0.0255
+Underidentification test (Kleibergen-Paap rk LM statistic):              5.420
+                                                   Chi-sq(2) P-val =    0.0665
 ------------------------------------------------------------------------------
-Weak identification test (Cragg-Donald Wald F statistic):                5.177
-                         (Kleibergen-Paap rk Wald F statistic):          5.168
-Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
-                                         15% maximal IV size              8.96
-                                         20% maximal IV size              6.66
-                                         25% maximal IV size              5.53
+Weak identification test (Cragg-Donald Wald F statistic):                2.748
+                         (Kleibergen-Paap rk Wald F statistic):          2.842
+Stock-Yogo weak ID test critical values: 10% maximal IV size             19.93
+                                         15% maximal IV size             11.59
+                                         20% maximal IV size              8.75
+                                         25% maximal IV size              7.25
 Source: Stock-Yogo (2005).  Reproduced by permission.
 NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
 ------------------------------------------------------------------------------
-Hansen J statistic (overidentification test of all instruments):         0.000
-                                                 (equation exactly identified)
+Hansen J statistic (overidentification test of all instruments):         0.273
+                                                   Chi-sq(1) P-val =    0.6013
 ------------------------------------------------------------------------------
 Instrumented:         precio
 Included instruments: infraestructura puntaje_doctor
-Excluded instruments: infraestructura_otros
-Duplicates:           puntaje_doctor
+Excluded instruments: infraestructura_otros puntaje_otros
 ------------------------------------------------------------------------------
+
+. outreg2 using "p1_regs.doc", ///
+>         nonotes bracket sdec(3) bdec(3) ///
+>         cttop("MC2E") ///
+>         label append word
+p1_regs.doc
+dir : seeout
 
 . ivreg2 delta (precio = infraestructura_otros puntaje_doctor) infraestructura ///
 >         puntaje_doctor tecnologia_alta, r first
@@ -1339,7 +1465,440 @@ Excluded instruments: infraestructura_otros
 Duplicates:           puntaje_doctor
 ------------------------------------------------------------------------------
 
+. outreg2 using "p1_regs.doc", ///
+>         nonotes bracket sdec(3) bdec(3) ///
+>         cttop("MC2E") ///
+>         label append word
+p1_regs.doc
+dir : seeout
+
+.         
+.         
+. *** NESTED LOGIT
+. 
+. gen grupo = .
+(800 missing values generated)
+
+. replace grupo = 1 if prestador == "Clinica_A" | prestador == "Clinica_B"
+(400 real changes made)
+
+. replace grupo = 2 if prestador == "Clinica_C"
+(200 real changes made)
+
+. replace grupo = 3 if prestador == "Publico"
+(200 real changes made)
+
+. 
+. * Share del prestador dentro de su grupo
+. bysort grupo ciudad: egen total_grupo = total(num_operados)
+
+. gen s_jg = num_operados / total_grupo
+(123 missing values generated)
+
+. gen ln_sjg = ln(s_jg)
+(123 missing values generated)
+
+. 
+. 
+. ** Regresión primera etapa
+. reg precio infraestructura_otros puntaje_otros infraestructura puntaje_doctor ///
+>         tecnologia_alta ln_sjg, r
+
+Linear regression                               Number of obs     =        677
+                                                F(6, 670)         =    1332.90
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.9209
+                                                Root MSE          =     .35154
+
+---------------------------------------------------------------------------------------
+                      |               Robust
+               precio | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------------+----------------------------------------------------------------
+infraestructura_otros |   .0035869   .0599685     0.06   0.952     -.114162    .1213357
+        puntaje_otros |  -.0232232   .0516229    -0.45   0.653    -.1245853    .0781389
+      infraestructura |  -.1735091   .0607342    -2.86   0.004    -.2927613   -.0542568
+       puntaje_doctor |   .4799335   .0498415     9.63   0.000     .3820692    .5777977
+      tecnologia_alta |   2.415057   .0477918    50.53   0.000     2.321218    2.508897
+               ln_sjg |  -.5420135   .0254067   -21.33   0.000    -.5918998   -.4921272
+                _cons |   5.681167   .3610738    15.73   0.000     4.972195    6.390139
+---------------------------------------------------------------------------------------
+
+. test infraestructura_otros puntaje_otros
+
+ ( 1)  infraestructura_otros = 0
+ ( 2)  puntaje_otros = 0
+
+       F(  2,   670) =    0.14
+            Prob > F =    0.8730
+
+. local F1 r(F)
+
+. outreg2 using "p1_regs_nested.doc", ///
+>         nonotes bracket sdec(3) bdec(3) ///
+>         adds("F-test excluded instrument", `F1') ///
+>         cttop("Primera Etapa") ///
+>         label replace word
+p1_regs_nested.doc
+dir : seeout
+
+. 
+. ivreg2 delta ln_sjg infraestructura puntaje_doctor ///
+>     (precio = infraestructura_otros puntaje_otros), r first
+
+First-stage regressions
+-----------------------
+
+
+First-stage regression of precio:
+
+Statistics robust to heteroskedasticity
+Number of obs =                    677
+---------------------------------------------------------------------------------------
+                      |               Robust
+               precio | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------------+----------------------------------------------------------------
+infraestructura_otros |   .3263782   .1356437     2.41   0.016      .060041    .5927155
+        puntaje_otros |  -.0567623   .1143528    -0.50   0.620    -.2812948    .1677701
+               ln_sjg |  -.1599278   .0469328    -3.41   0.001    -.2520806    -.067775
+      infraestructura |   .5924508   .1289723     4.59   0.000      .339213    .8456887
+       puntaje_doctor |   .6347871   .1120241     5.67   0.000     .4148271    .8547471
+                _cons |   1.063873   .8117812     1.31   0.190    -.5300641     2.65781
+---------------------------------------------------------------------------------------
+F test of excluded instruments:
+  F(  2,   671) =     3.34
+  Prob > F      =   0.0361
+Sanderson-Windmeijer multivariate F test of excluded instruments:
+  F(  2,   671) =     3.34
+  Prob > F      =   0.0361
+
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  2,   671)  P-val | SW Chi-sq(  2) P-val | SW F(  2,   671)
+precio       |       3.34    0.0361 |        6.73   0.0345 |        3.34
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             19.93
+                                   15% maximal IV size             11.59
+                                   20% maximal IV size              8.75
+                                   25% maximal IV size              7.25
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(2)=6.35     P-val=0.0419
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                       3.24
+Kleibergen-Paap Wald rk F statistic                                 3.34
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=2:
+                                   10% maximal IV size             19.93
+                                   15% maximal IV size             11.59
+                                   20% maximal IV size              8.75
+                                   25% maximal IV size              7.25
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(2,671)=       8.36     P-val=0.0003
+Anderson-Rubin Wald test           Chi-sq(2)=     16.87     P-val=0.0002
+Stock-Wright LM S statistic        Chi-sq(2)=     16.06     P-val=0.0003
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        677
+Number of regressors                 K  =          5
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =          6
+Number of excluded instruments       L1 =          2
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      677
+                                                      F(  4,   672) =    74.43
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  543.9528976                Centered R2   =  -0.2763
+Total (uncentered) SS   =  13624.65214                Uncentered R2 =   0.9490
+Residual SS             =  694.2280239                Root MSE      =    1.013
+
+---------------------------------------------------------------------------------
+                |               Robust
+          delta | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+         precio |  -1.031017   .4723533    -2.18   0.029    -1.956813   -.1052217
+         ln_sjg |   .5580851   .0983695     5.67   0.000     .3652845    .7508858
+infraestructura |   .7449506   .1504152     4.95   0.000     .4501422    1.039759
+ puntaje_doctor |   .7999883   .3246771     2.46   0.014     .1636328    1.436344
+          _cons |  -3.359462   1.227349    -2.74   0.006    -5.765022   -.9539028
+---------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):              6.346
+                                                   Chi-sq(2) P-val =    0.0419
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):                3.238
+                         (Kleibergen-Paap rk Wald F statistic):          3.337
+Stock-Yogo weak ID test critical values: 10% maximal IV size             19.93
+                                         15% maximal IV size             11.59
+                                         20% maximal IV size              8.75
+                                         25% maximal IV size              7.25
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.862
+                                                   Chi-sq(1) P-val =    0.3532
+------------------------------------------------------------------------------
+Instrumented:         precio
+Included instruments: ln_sjg infraestructura puntaje_doctor
+Excluded instruments: infraestructura_otros puntaje_otros
+------------------------------------------------------------------------------
+
+. outreg2 using "p1_regs_nested.doc", ///
+>         nonotes bracket sdec(3) bdec(3) ///
+>         cttop("MC2E") ///
+>         label append word
+p1_regs_nested.doc
+dir : seeout
+
+.         
+. ** repetimos para la otra base
+. import excel using "df_p1_interp.xlsx", firstrow clear
+(16 vars, 800 obs)
+
+. 
+. ** Generamos variables de nuevo
+. gen delta = ln(mkt_share) - ln(outside_op_mktsh)
+
+. 
+. egen infraestructura_otros = mean(infraestructura), by(ciudad year)
+
+. replace infraestructura_otros = infraestructura_otros - infraestructura
+(800 real changes made)
+
+. 
+. egen puntaje_otros = mean(puntaje_doctor), by(ciudad year)
+
+. replace puntaje_otros = puntaje_otros - puntaje_doctor
+(800 real changes made)
+
+. 
+. gen grupo = .
+(800 missing values generated)
+
+. replace grupo = 1 if prestador == "Clinica_A" | prestador == "Clinica_B"
+(400 real changes made)
+
+. replace grupo = 2 if prestador == "Clinica_C"
+(200 real changes made)
+
+. replace grupo = 3 if prestador == "Publico"
+(200 real changes made)
+
+. 
+. * Share del prestador dentro de su grupo
+. bysort grupo ciudad: egen total_grupo = total(num_operados)
+
+. gen s_jg = num_operados / total_grupo
+
+. gen ln_sjg = ln(s_jg)
+
+. 
+. 
+. ** Regresión primera etapa
+. reg precio infraestructura_otros puntaje_otros infraestructura puntaje_doctor ///
+>         tecnologia_alta ln_sjg, r
+
+Linear regression                               Number of obs     =        800
+                                                F(6, 793)         =       6.01
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.3762
+                                                Root MSE          =     11.421
+
+---------------------------------------------------------------------------------------
+                      |               Robust
+               precio | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------------+----------------------------------------------------------------
+infraestructura_otros |   .3538921   .3984463     0.89   0.375    -.4282421    1.136026
+        puntaje_otros |   1.603236   1.149783     1.39   0.164     -.653742    3.860214
+      infraestructura |  -.4474072   1.056863    -0.42   0.672    -2.521987    1.627172
+       puntaje_doctor |   5.332775   3.340593     1.60   0.111    -1.224674    11.89022
+      tecnologia_alta |  -1.430179   2.338346    -0.61   0.541    -6.020258    3.159901
+               ln_sjg |  -.6901152   .4545042    -1.52   0.129    -1.582289    .2020583
+                _cons |  -29.75303   24.90853    -1.19   0.233    -78.64748    19.14142
+---------------------------------------------------------------------------------------
+
+. test infraestructura_otros puntaje_otros
+
+ ( 1)  infraestructura_otros = 0
+ ( 2)  puntaje_otros = 0
+
+       F(  2,   793) =    0.98
+            Prob > F =    0.3753
+
+. local F1 r(F)
+
+. outreg2 using "p1_regs_nested.doc", ///
+>         nonotes bracket sdec(3) bdec(3) ///
+>         adds("F-test excluded instrument", `F1') ///
+>         addtext("Base rellenada", "X") ///
+>         cttop("Primera Etapa") ///
+>         label append word
+p1_regs_nested.doc
+dir : seeout
+
+. 
+. ivreg2 delta ln_sjg infraestructura puntaje_doctor ///
+>     (precio = infraestructura_otros puntaje_otros), r first
+
+First-stage regressions
+-----------------------
+
+
+First-stage regression of precio:
+
+Statistics robust to heteroskedasticity
+Number of obs =                    800
+---------------------------------------------------------------------------------------
+                      |               Robust
+               precio | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------------+----------------------------------------------------------------
+infraestructura_otros |   .3674999   .4300239     0.85   0.393    -.4766182    1.211618
+        puntaje_otros |   1.609889   1.166021     1.38   0.168     -.678959    3.898738
+               ln_sjg |  -.6883806   .4539196    -1.52   0.130    -1.579405    .2026436
+      infraestructura |   -.471283   1.086428    -0.43   0.665    -2.603894    1.661328
+       puntaje_doctor |   5.298498   3.297871     1.61   0.109    -1.175079    11.77208
+                _cons |  -29.56318   24.70502    -1.20   0.232    -78.05805    18.93169
+---------------------------------------------------------------------------------------
+F test of excluded instruments:
+  F(  2,   794) =     0.96
+  Prob > F      =   0.3842
+Sanderson-Windmeijer multivariate F test of excluded instruments:
+  F(  2,   794) =     0.96
+  Prob > F      =   0.3842
+
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  2,   794)  P-val | SW Chi-sq(  2) P-val | SW F(  2,   794)
+precio       |       0.96    0.3842 |        1.93   0.3810 |        0.96
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             19.93
+                                   15% maximal IV size             11.59
+                                   20% maximal IV size              8.75
+                                   25% maximal IV size              7.25
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(2)=2.05     P-val=0.3592
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                       4.92
+Kleibergen-Paap Wald rk F statistic                                 0.96
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=2:
+                                   10% maximal IV size             19.93
+                                   15% maximal IV size             11.59
+                                   20% maximal IV size              8.75
+                                   25% maximal IV size              7.25
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(2,794)=       2.62     P-val=0.0736
+Anderson-Rubin Wald test           Chi-sq(2)=      5.27     P-val=0.0716
+Stock-Wright LM S statistic        Chi-sq(2)=     22.86     P-val=0.0000
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        800
+Number of regressors                 K  =          5
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =          6
+Number of excluded instruments       L1 =          2
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      800
+                                                      F(  4,   795) =    30.18
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  4457.390017                Centered R2   =   0.3306
+Total (uncentered) SS   =  18717.31681                Uncentered R2 =   0.8406
+Residual SS             =  2983.839323                Root MSE      =    1.931
+
+---------------------------------------------------------------------------------
+                |               Robust
+          delta | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+         precio |  -.1438426   .0612879    -2.35   0.019    -.2639646   -.0237205
+         ln_sjg |   .0005955   .0489211     0.01   0.990     -.095288    .0964791
+infraestructura |   .3767701   .0550586     6.84   0.000     .2688573    .4846829
+ puntaje_doctor |   .4517396   .1127092     4.01   0.000     .2308337    .6726455
+          _cons |  -8.658032   .6752397   -12.82   0.000    -9.981478   -7.334587
+---------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):              2.047
+                                                   Chi-sq(2) P-val =    0.3592
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):                4.924
+                         (Kleibergen-Paap rk Wald F statistic):          0.958
+Stock-Yogo weak ID test critical values: 10% maximal IV size             19.93
+                                         15% maximal IV size             11.59
+                                         20% maximal IV size              8.75
+                                         25% maximal IV size              7.25
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.715
+                                                   Chi-sq(1) P-val =    0.3978
+------------------------------------------------------------------------------
+Instrumented:         precio
+Included instruments: ln_sjg infraestructura puntaje_doctor
+Excluded instruments: infraestructura_otros puntaje_otros
+------------------------------------------------------------------------------
+
+. outreg2 using "p1_regs_nested.doc", ///
+>         nonotes bracket sdec(3) bdec(3) ///
+>         addtext("Base rellenada", "X") ///
+>         cttop("MC2E") ///
+>         label append word
+p1_regs_nested.doc
+dir : seeout
+
+. 
+. import excel using "df_p1.xlsx", firstrow clear
+(16 vars, 800 obs)
+
+.         
 . 
 end of do-file
 
-. exit, clear

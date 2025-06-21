@@ -1,0 +1,31 @@
+{\rtf1\fs24
+\trowd\trgaph75\trleft-75\intbl\trqc\clbrdrt\brdrs\cellx3888\clbrdrt\brdrs\cellx5328\clbrdrt\brdrs\cellx6768\clbrdrt\brdrs\cellx8784\clbrdrt\brdrs\cellx10224\clbrdrt\brdrs\cellx11520
+\ql \cell\qc (1)\cell\qc (2)\cell\qc (3)\cell\qc (4)\cell\qc (5)\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx3888\cellx5328\cellx6768\cellx8784\cellx10224\cellx11520
+\ql \cell\qc MCO\cell\qc MCO\cell\qc Primera Etapa\cell\qc MC2E\cell\qc MC2E\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx3888\cellx5328\cellx6768\cellx8784\cellx10224\cellx11520
+\trowd\trgaph75\trleft-75\trqc\clbrdrb\brdrs\cellx3888\clbrdrb\brdrs\cellx5328\clbrdrb\brdrs\cellx6768\clbrdrb\brdrs\cellx8784\clbrdrb\brdrs\cellx10224\clbrdrb\brdrs\cellx11520
+\ql VARIABLES\cell\qc delta\cell\qc delta\cell\qc precio\cell\qc delta\cell\qc delta\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx3888\cellx5328\cellx6768\cellx8784\cellx10224\cellx11520
+\ql \cell\qc \cell\qc \cell\qc \cell\qc \cell\qc \cell\row
+\ql infraestructura_otros\cell\qc \cell\qc \cell\qc -0.001\cell\qc \cell\qc \cell\row
+\ql \cell\qc \cell\qc \cell\qc [0.083]\cell\qc \cell\qc \cell\row
+\ql puntaje_otros\cell\qc \cell\qc \cell\qc -0.067\cell\qc \cell\qc \cell\row
+\ql \cell\qc \cell\qc \cell\qc [0.070]\cell\qc \cell\qc \cell\row
+\ql infraestructura\cell\qc 0.389***\cell\qc 0.241***\cell\qc -0.062\cell\qc 0.598***\cell\qc 0.680\cell\row
+\ql \cell\qc [0.047]\cell\qc [0.032]\cell\qc [0.079]\cell\qc [0.151]\cell\qc [0.748]\cell\row
+\ql puntaje_doctor\cell\qc 0.235***\cell\qc 0.588***\cell\qc 0.453***\cell\qc 0.611*\cell\qc -3.426\cell\row
+\ql \cell\qc [0.051]\cell\qc [0.034]\cell\qc [0.067]\cell\qc [0.312]\cell\qc [6.069]\cell\row
+\ql tecnologia_alta\cell\qc \cell\qc 2.470***\cell\qc 2.076***\cell\qc \cell\qc -13.376\cell\row
+\ql \cell\qc \cell\qc [0.076]\cell\qc [0.055]\cell\qc \cell\qc [24.455]\cell\row
+\ql precio\cell\qc -0.234***\cell\qc -1.007***\cell\qc \cell\qc -0.732\cell\qc 6.765\cell\row
+\ql \cell\qc [0.044]\cell\qc [0.033]\cell\qc \cell\qc [0.456]\cell\qc [11.808]\cell\row
+\ql Constant\cell\qc -6.306***\cell\qc -0.729**\cell\qc 6.652***\cell\qc -5.455***\cell\qc -48.472\cell\row
+\ql \cell\qc [0.376]\cell\qc [0.327]\cell\qc [0.501]\cell\qc [1.346]\cell\qc [73.106]\cell\row
+\ql \cell\qc \cell\qc \cell\qc \cell\qc \cell\qc \cell\row
+\ql Observations\cell\qc 677\cell\qc 677\cell\qc 677\cell\qc 677\cell\qc 677\cell\row
+\ql R-squared\cell\qc \cell\qc \cell\qc 0.850\cell\qc -0.058\cell\qc -16.960\cell\row
+\ql Number of panel_id\cell\qc 80\cell\qc 80\cell\qc \cell\qc \cell\qc \cell\row
+\trowd\trgaph75\trleft-75\trqc\trbrdrb\brdrs\clbrdrb\brdrs\cellx3888\clbrdrb\brdrs\cellx5328\clbrdrb\brdrs\cellx6768\clbrdrb\brdrs\cellx8784\clbrdrb\brdrs\cellx10224\clbrdrb\brdrs\cellx11520
+\ql F-test excluded instrument\cell\qc \cell\qc \cell\qc 0.656\cell\qc \cell\qc \cell\row
+}

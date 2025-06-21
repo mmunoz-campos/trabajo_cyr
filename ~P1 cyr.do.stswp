@@ -189,5 +189,5 @@ outreg2 using "p1_regs_nested.doc", ///
 	cttop("MC2E") ///
 	label append word
 
-import excel using "df_p1.xlsx", firstrow clear
+
 	

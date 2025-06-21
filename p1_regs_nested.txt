@@ -1,0 +1,25 @@
+		(1)	(2)	(3)	(4)
+		Primera Etapa	MC2E	Primera Etapa	MC2E
+VARIABLES	LABELS	precio	delta	precio	delta
+					
+infraestructura_otros	infraestructura_otros	0.004		0.354	
+		[0.060]		[0.398]	
+puntaje_otros	puntaje_otros	-0.023		1.603	
+		[0.052]		[1.150]	
+infraestructura	infraestructura	-0.174***	0.745***	-0.447	0.377***
+		[0.061]	[0.150]	[1.057]	[0.055]
+puntaje_doctor	puntaje_doctor	0.480***	0.800**	5.333	0.452***
+		[0.050]	[0.325]	[3.341]	[0.113]
+tecnologia_alta	tecnologia_alta	2.415***		-1.430	
+		[0.048]		[2.338]	
+ln_sjg	ln_sjg	-0.542***	0.558***	-0.690	0.001
+		[0.025]	[0.098]	[0.455]	[0.049]
+precio	precio		-1.031**		-0.144**
+			[0.472]		[0.061]
+Constant	Constant	5.681***	-3.359***	-29.753	-8.658***
+		[0.361]	[1.227]	[24.909]	[0.675]
+					
+Observations		677	677	800	800
+R-squared		0.921	-0.276	0.376	0.331
+F-test excluded instrument		0.136		0.981	
+Base rellenada				X	X
