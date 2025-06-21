@@ -4,7 +4,7 @@ macro drop _all
 capture log close
 log using P1cyr.log, replace
 
-import excel using "df_p1_interp.xlsx", firstrow clear
+import excel using "df_p1.xlsx", firstrow clear
 
 sort ciudad year prestador
 
@@ -27,8 +27,8 @@ gen delta = ln(mkt_share) - ln(outside_op_mktsh)
 
 egen panel_id = group(ciudad prestador)
 xtset panel_id year
-xtreg delta infraestructura puntaje_doctor precio
-xtreg delta infraestructura puntaje_doctor tecnologia_alta precio
+xtreg delta infraestructura puntaje_doctor precio, r
+xtreg delta infraestructura puntaje_doctor tecnologia_alta precio, r
 
 ** SEGUNDA REGRESION
 egen infraestructura_otros = mean(infraestructura), by(ciudad year)
@@ -37,6 +37,7 @@ replace infraestructura_otros = infraestructura_otros - infraestructura
 egen puntaje_otros = mean(puntaje_doctor), by(ciudad year)
 replace puntaje_otros = puntaje_otros - puntaje_doctor
 
-ivreg2 delta (precio = infraestructura_otros puntaje_doctor) infraestructura puntaje_doctor
 ivreg2 delta (precio = infraestructura_otros puntaje_doctor) infraestructura ///
-	puntaje_doctor tecnologia_alta
+	puntaje_doctor, r first
+ivreg2 delta (precio = infraestructura_otros puntaje_doctor) infraestructura ///
+	puntaje_doctor tecnologia_alta, r first

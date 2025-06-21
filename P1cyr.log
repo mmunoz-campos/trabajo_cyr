@@ -2,22 +2,27 @@
       name:  <unnamed>
        log:  /Users/mmunozcampos/Documents/Comp y reg/trabajo_cyr/P1cyr.log
   log type:  text
- opened on:  20 Jun 2025, 15:40:48
+ opened on:  20 Jun 2025, 16:10:00
 
 . 
-. import excel using "df_p1_interp.xlsx", firstrow clear
+. import excel using "df_p1.xlsx", firstrow clear
 (15 vars, 800 obs)
 
 . 
-. *sort ciudad prestador year
+. sort ciudad year prestador
+
 . 
 . egen z_infra = std(infraestructura)
+(123 missing values generated)
 
 . egen z_operados = std(num_operados)
+(123 missing values generated)
 
 . egen z_doctores = std(puntaje_doctor)
+(123 missing values generated)
 
 . egen z_precio = std(precio)
+(123 missing values generated)
 
 . 
 . * Agrupamiento jerárquico
@@ -35,1043 +40,974 @@ cluster name: _clus_1
      | prestador   _clus~rd |
      |----------------------|
   1. | Clinica_A          1 |
-  2. | Clinica_B        325 |
-  3. | Clinica_C        205 |
-  4. |   Publico        329 |
-  5. | Clinica_A        333 |
-     |----------------------|
-  6. | Clinica_B        549 |
-  7. | Clinica_C        397 |
-  8. |   Publico        417 |
-  9. | Clinica_A         57 |
- 10. | Clinica_B        597 |
-     |----------------------|
- 11. | Clinica_C        681 |
- 12. |   Publico         89 |
- 13. | Clinica_A         81 |
- 14. | Clinica_B        361 |
- 15. | Clinica_C         85 |
-     |----------------------|
- 16. |   Publico        125 |
- 17. | Clinica_A        641 |
- 18. | Clinica_B        129 |
- 19. | Clinica_C        241 |
- 20. |   Publico        109 |
-     |----------------------|
- 21. | Clinica_A        477 |
- 22. | Clinica_B        153 |
- 23. | Clinica_C        793 |
- 24. |   Publico        185 |
- 25. | Clinica_A        337 |
-     |----------------------|
- 26. | Clinica_B        570 |
- 27. | Clinica_C        117 |
- 28. |   Publico        753 |
- 29. | Clinica_A        229 |
- 30. | Clinica_B        421 |
-     |----------------------|
- 31. | Clinica_C        789 |
- 32. |   Publico        321 |
- 33. | Clinica_A        373 |
- 34. | Clinica_B        481 |
- 35. | Clinica_C        573 |
-     |----------------------|
- 36. |   Publico        165 |
- 37. | Clinica_A        201 |
- 38. | Clinica_B        285 |
- 39. | Clinica_C        781 |
- 40. |   Publico        305 |
-     |----------------------|
- 41. | Clinica_A        677 |
- 42. | Clinica_B        437 |
- 43. | Clinica_C        613 |
- 44. |   Publico        785 |
- 45. | Clinica_A        277 |
-     |----------------------|
- 46. | Clinica_B        289 |
- 47. | Clinica_C          5 |
- 48. |   Publico        577 |
- 49. | Clinica_A         49 |
- 50. | Clinica_B         53 |
-     |----------------------|
- 51. | Clinica_C        765 |
- 52. |   Publico          9 |
- 53. | Clinica_A        581 |
- 54. | Clinica_B         33 |
- 55. | Clinica_C        673 |
-     |----------------------|
- 56. |   Publico         73 |
- 57. | Clinica_A        637 |
- 58. | Clinica_B        261 |
- 59. | Clinica_C        157 |
- 60. |   Publico        317 |
-     |----------------------|
- 61. | Clinica_A        225 |
- 62. | Clinica_B        257 |
- 63. | Clinica_C        521 |
- 64. |   Publico        265 |
- 65. | Clinica_A        585 |
-     |----------------------|
- 66. | Clinica_B        705 |
- 67. | Clinica_C         37 |
- 68. |   Publico        353 |
- 69. | Clinica_A        193 |
- 70. | Clinica_B        665 |
-     |----------------------|
- 71. | Clinica_C        429 |
- 72. |   Publico        797 |
- 73. | Clinica_A        349 |
- 74. | Clinica_B        509 |
- 75. | Clinica_C        589 |
-     |----------------------|
- 76. |   Publico        461 |
- 77. | Clinica_A        121 |
- 78. | Clinica_B        489 |
- 79. | Clinica_C        449 |
- 80. |   Publico        245 |
-     |----------------------|
- 81. | Clinica_A        249 |
- 82. | Clinica_B        133 |
- 83. | Clinica_C        485 |
- 84. |   Publico        601 |
- 85. | Clinica_A        137 |
-     |----------------------|
- 86. | Clinica_B        565 |
- 87. | Clinica_C        194 |
- 88. |   Publico        313 |
- 89. | Clinica_A        453 |
- 90. | Clinica_B        141 |
-     |----------------------|
- 91. | Clinica_C        557 |
- 92. |   Publico        661 |
- 93. | Clinica_A        657 |
- 94. | Clinica_B         66 |
- 95. | Clinica_C         98 |
-     |----------------------|
- 96. |   Publico        434 |
- 97. | Clinica_A        178 |
- 98. | Clinica_B        569 |
- 99. | Clinica_C        414 |
-100. |   Publico        341 |
-     |----------------------|
-101. | Clinica_A        745 |
-102. | Clinica_B        425 |
-103. | Clinica_C        513 |
-104. |   Publico        345 |
-105. | Clinica_A        457 |
-     |----------------------|
-106. | Clinica_B        473 |
-107. | Clinica_C        377 |
-108. |   Publico        546 |
-109. | Clinica_A        721 |
-110. | Clinica_B        385 |
-     |----------------------|
-111. | Clinica_C        633 |
-112. |   Publico         13 |
-113. | Clinica_A        413 |
-114. | Clinica_B         29 |
-115. | Clinica_C         17 |
-     |----------------------|
-116. |   Publico        389 |
-117. | Clinica_A        609 |
-118. | Clinica_B        209 |
-119. | Clinica_C         21 |
-120. |   Publico        669 |
-     |----------------------|
-121. | Clinica_A         25 |
-122. | Clinica_B        517 |
-123. | Clinica_C        149 |
-124. |   Publico        593 |
-125. | Clinica_A        749 |
-     |----------------------|
-126. | Clinica_B         77 |
-127. | Clinica_C        309 |
-128. |   Publico        213 |
-129. | Clinica_A        221 |
-130. | Clinica_B        393 |
-     |----------------------|
-131. | Clinica_C        754 |
-132. |   Publico        409 |
-133. | Clinica_A        405 |
-134. | Clinica_B        441 |
-135. | Clinica_C        217 |
-     |----------------------|
-136. |   Publico         45 |
-137. | Clinica_A        365 |
-138. | Clinica_B         93 |
-139. | Clinica_C        369 |
-140. |   Publico        253 |
-     |----------------------|
-141. | Clinica_A        281 |
-142. | Clinica_B        761 |
-143. | Clinica_C         61 |
-144. |   Publico        237 |
-145. | Clinica_A         69 |
-     |----------------------|
-146. | Clinica_B        113 |
-147. | Clinica_C        105 |
-148. |   Publico         65 |
-149. | Clinica_A        101 |
-150. | Clinica_B         97 |
-     |----------------------|
-151. | Clinica_C        197 |
-152. |   Publico        629 |
-153. | Clinica_A        465 |
-154. | Clinica_B        717 |
-155. | Clinica_C        545 |
-     |----------------------|
-156. |   Publico        161 |
-157. | Clinica_A        605 |
-158. | Clinica_B        189 |
-159. | Clinica_C        433 |
-160. |   Publico        273 |
-     |----------------------|
-161. | Clinica_A        553 |
-162. | Clinica_B        233 |
-163. | Clinica_C        269 |
-164. |   Publico        757 |
-165. | Clinica_A        645 |
-     |----------------------|
-166. | Clinica_B        713 |
-167. | Clinica_C        469 |
-168. |   Publico        709 |
-169. | Clinica_A        445 |
-170. | Clinica_B        525 |
-     |----------------------|
-171. | Clinica_C        561 |
-172. |   Publico         41 |
-173. | Clinica_A        505 |
-174. | Clinica_B        649 |
-175. | Clinica_C        529 |
-     |----------------------|
-176. |   Publico        145 |
-177. | Clinica_A        653 |
-178. | Clinica_B        357 |
-179. | Clinica_C        401 |
-180. |   Publico        493 |
-     |----------------------|
-181. | Clinica_A        497 |
-182. | Clinica_B        501 |
-183. | Clinica_C        533 |
-184. |   Publico        537 |
-185. | Clinica_A        541 |
-     |----------------------|
-186. | Clinica_B        318 |
-187. | Clinica_C        714 |
-188. |   Publico        402 |
-189. | Clinica_A        685 |
-190. | Clinica_B        697 |
-     |----------------------|
-191. | Clinica_C        689 |
-192. |   Publico        693 |
-193. | Clinica_A        701 |
-194. | Clinica_B        777 |
-195. | Clinica_C        769 |
-     |----------------------|
-196. |   Publico        773 |
-197. | Clinica_A        478 |
-198. | Clinica_B        794 |
-199. | Clinica_C        638 |
-200. |   Publico        198 |
-     |----------------------|
-201. | Clinica_A        758 |
-202. | Clinica_B        722 |
-203. | Clinica_C        438 |
-204. |   Publico          2 |
-205. | Clinica_A        202 |
-     |----------------------|
-206. | Clinica_B         18 |
-207. | Clinica_C        639 |
-208. |   Publico        658 |
-209. | Clinica_A        250 |
-210. | Clinica_B        298 |
-     |----------------------|
-211. | Clinica_C        282 |
-212. |   Publico        690 |
-213. | Clinica_A         54 |
-214. | Clinica_B        686 |
-215. | Clinica_C        466 |
-     |----------------------|
-216. |   Publico        146 |
-217. | Clinica_A        310 |
-218. | Clinica_B        134 |
-219. | Clinica_C        390 |
-220. |   Publico        362 |
-     |----------------------|
-221. | Clinica_A        790 |
-222. | Clinica_B        550 |
-223. | Clinica_C        582 |
-224. |   Publico        670 |
-225. | Clinica_A        358 |
-     |----------------------|
-226. | Clinica_B         26 |
-227. | Clinica_C        102 |
-228. |   Publico        274 |
-229. | Clinica_A        226 |
-230. | Clinica_B        182 |
-     |----------------------|
-231. | Clinica_C        302 |
-232. |   Publico        122 |
-233. | Clinica_A        210 |
-234. | Clinica_B        662 |
-235. | Clinica_C        218 |
-     |----------------------|
-236. |   Publico        406 |
-237. | Clinica_A        530 |
-238. | Clinica_B        534 |
-239. | Clinica_C        494 |
-240. |   Publico        778 |
-     |----------------------|
-241. | Clinica_A        694 |
-242. | Clinica_B        246 |
-243. | Clinica_C        490 |
-244. |   Publico        646 |
-245. | Clinica_A        706 |
-     |----------------------|
-246. | Clinica_B        746 |
-247. | Clinica_C        782 |
-248. |   Publico          6 |
-249. | Clinica_A        410 |
-250. | Clinica_B        130 |
-     |----------------------|
-251. | Clinica_C        174 |
-252. |   Publico        626 |
-253. | Clinica_A        578 |
-254. | Clinica_B        786 |
-255. | Clinica_C        454 |
-     |----------------------|
-256. |   Publico        486 |
-257. | Clinica_A        526 |
-258. | Clinica_B        538 |
-259. | Clinica_C        542 |
-260. |   Publico         10 |
-     |----------------------|
-261. | Clinica_A        654 |
-262. | Clinica_B        710 |
-263. | Clinica_C        126 |
-264. |   Publico        170 |
-265. | Clinica_A        242 |
-     |----------------------|
-266. | Clinica_B        286 |
-267. | Clinica_C        726 |
-268. |   Publico         58 |
-269. | Clinica_A        378 |
-270. | Clinica_B        574 |
-     |----------------------|
-271. | Clinica_C        622 |
-272. |   Publico         30 |
-273. | Clinica_A        190 |
-274. | Clinica_B        266 |
-275. | Clinica_C        394 |
-     |----------------------|
-276. |   Publico         74 |
-277. | Clinica_A        150 |
-278. | Clinica_B         42 |
-279. | Clinica_C        418 |
-280. |   Publico        206 |
-     |----------------------|
-281. | Clinica_A        462 |
-282. | Clinica_B        322 |
-283. | Clinica_C        774 |
-284. |   Publico        470 |
-285. | Clinica_A         60 |
-     |----------------------|
-286. | Clinica_B        712 |
-287. | Clinica_C        464 |
-288. |   Publico        140 |
-289. | Clinica_A        502 |
-290. | Clinica_B        138 |
-     |----------------------|
-291. | Clinica_C        568 |
-292. |   Publico        698 |
-293. | Clinica_A        234 |
-294. | Clinica_B         22 |
-295. | Clinica_C        270 |
-     |----------------------|
-296. |   Publico        222 |
-297. | Clinica_A        342 |
-298. | Clinica_B         62 |
-299. | Clinica_C        350 |
-300. |   Publico        106 |
-     |----------------------|
-301. | Clinica_A        354 |
-302. | Clinica_B        650 |
-303. | Clinica_C         50 |
-304. |   Publico        166 |
-305. | Clinica_A         90 |
-     |----------------------|
-306. | Clinica_B        258 |
-307. | Clinica_C        446 |
-308. |   Publico        742 |
-309. | Clinica_A        458 |
-310. | Clinica_B        590 |
-     |----------------------|
-311. | Clinica_C        610 |
-312. |   Publico         82 |
-313. | Clinica_A        326 |
-314. | Clinica_B        422 |
-315. | Clinica_C        630 |
-     |----------------------|
-316. |   Publico         34 |
-317. | Clinica_A        386 |
-318. | Clinica_B        306 |
-319. | Clinica_C        381 |
-320. |   Publico         86 |
-     |----------------------|
-321. | Clinica_A        766 |
-322. | Clinica_B        214 |
-323. | Clinica_C        346 |
-324. |   Publico         46 |
-325. | Clinica_A        254 |
-     |----------------------|
-326. | Clinica_B        474 |
-327. | Clinica_C        290 |
-328. |   Publico        666 |
-329. | Clinica_A        618 |
-330. | Clinica_B        738 |
-     |----------------------|
-331. | Clinica_C        294 |
-332. |   Publico        586 |
-333. | Clinica_A        606 |
-334. | Clinica_B        426 |
-335. | Clinica_C        506 |
-     |----------------------|
-336. |   Publico        750 |
-337. | Clinica_A         70 |
-338. | Clinica_B        186 |
-339. | Clinica_C        230 |
-340. |   Publico        110 |
-     |----------------------|
-341. | Clinica_A        114 |
-342. | Clinica_B        734 |
-343. | Clinica_C        142 |
-344. |   Publico         94 |
-345. | Clinica_A        510 |
-     |----------------------|
-346. | Clinica_B        770 |
-347. | Clinica_C        498 |
-348. |   Publico        566 |
-349. | Clinica_A        330 |
-350. | Clinica_B        702 |
-     |----------------------|
-351. | Clinica_C        338 |
-352. |   Publico        366 |
-353. | Clinica_A        334 |
-354. | Clinica_B        374 |
-355. | Clinica_C        370 |
-     |----------------------|
-356. |   Publico        450 |
-357. | Clinica_A         38 |
-358. | Clinica_B        169 |
-359. | Clinica_C        293 |
-360. |   Publico        297 |
-     |----------------------|
-361. | Clinica_A        617 |
-362. | Clinica_B        181 |
-363. | Clinica_C        301 |
-364. |   Publico        625 |
-365. | Clinica_A        634 |
-     |----------------------|
-366. | Clinica_B        173 |
-367. | Clinica_C        177 |
-368. |   Publico        621 |
-369. | Clinica_A        730 |
-370. | Clinica_B        262 |
-     |----------------------|
-371. | Clinica_C        382 |
-372. |   Publico        762 |
-373. | Clinica_A          4 |
-374. | Clinica_B        348 |
-375. | Clinica_C        428 |
-     |----------------------|
-376. |   Publico        528 |
-377. | Clinica_A        240 |
-378. | Clinica_B        292 |
-379. | Clinica_C        108 |
-380. |   Publico        260 |
-     |----------------------|
-381. | Clinica_A        144 |
-382. | Clinica_B        456 |
-383. | Clinica_C        516 |
-384. |   Publico        492 |
-385. | Clinica_A         24 |
-     |----------------------|
-386. | Clinica_B        572 |
-387. | Clinica_C        176 |
-388. |   Publico        216 |
-389. | Clinica_A        520 |
-390. | Clinica_B        600 |
-     |----------------------|
-391. | Clinica_C         72 |
-392. |   Publico        152 |
-393. | Clinica_A        256 |
-394. | Clinica_B        620 |
-395. | Clinica_C        460 |
-     |----------------------|
-396. |   Publico        752 |
-397. | Clinica_A        716 |
-398. | Clinica_B        352 |
-399. | Clinica_C        656 |
-400. |   Publico        784 |
-     |----------------------|
-401. | Clinica_A         84 |
-402. | Clinica_B        244 |
-403. | Clinica_C        396 |
-404. |   Publico        700 |
-405. | Clinica_A         92 |
-     |----------------------|
-406. | Clinica_B        252 |
-407. | Clinica_C        212 |
-408. |   Publico        768 |
-409. | Clinica_A        684 |
-410. | Clinica_B        692 |
-     |----------------------|
-411. | Clinica_C        680 |
-412. |   Publico         32 |
-413. | Clinica_A        792 |
-414. | Clinica_B        128 |
-415. | Clinica_C        148 |
-     |----------------------|
-416. |   Publico        284 |
-417. | Clinica_A        188 |
-418. | Clinica_B        640 |
-419. | Clinica_C        400 |
-420. |   Publico         88 |
-     |----------------------|
-421. | Clinica_A        288 |
-422. | Clinica_B        584 |
-423. | Clinica_C        184 |
-424. |   Publico        672 |
-425. | Clinica_A        272 |
-     |----------------------|
-426. | Clinica_B        652 |
-427. | Clinica_C        760 |
-428. |   Publico        756 |
-429. | Clinica_A        268 |
-430. | Clinica_B        324 |
-     |----------------------|
-431. | Clinica_C         48 |
-432. |   Publico         68 |
-433. | Clinica_A        332 |
-434. | Clinica_B        372 |
-435. | Clinica_C        100 |
-     |----------------------|
-436. |   Publico        472 |
-437. | Clinica_A         56 |
-438. | Clinica_B        340 |
-439. | Clinica_C        412 |
-440. |   Publico        780 |
-     |----------------------|
-441. | Clinica_A        228 |
-442. | Clinica_B        484 |
-443. | Clinica_C        180 |
-444. |   Publico        788 |
-445. | Clinica_A        720 |
-     |----------------------|
-446. | Clinica_B        604 |
-447. | Clinica_C        744 |
-448. |   Publico        300 |
-449. | Clinica_A        424 |
-450. | Clinica_B        576 |
-     |----------------------|
-451. | Clinica_C         36 |
-452. |   Publico        120 |
-453. | Clinica_A        328 |
-454. | Clinica_B        764 |
-455. | Clinica_C        384 |
-     |----------------------|
-456. |   Publico        420 |
-457. | Clinica_A        204 |
-458. | Clinica_B        548 |
-459. | Clinica_C        688 |
-460. |   Publico        776 |
-     |----------------------|
-461. | Clinica_A        304 |
-462. | Clinica_B        740 |
-463. | Clinica_C        236 |
-464. |   Publico        676 |
-465. | Clinica_A          8 |
-     |----------------------|
-466. | Clinica_B        540 |
-467. | Clinica_C        316 |
-468. |   Publico        504 |
-469. | Clinica_A        368 |
-470. | Clinica_B        444 |
-     |----------------------|
-471. | Clinica_C        500 |
-472. |   Publico        432 |
-473. | Clinica_A        664 |
-474. | Clinica_B        440 |
-475. | Clinica_C        748 |
-     |----------------------|
-476. |   Publico        168 |
-477. | Clinica_A        308 |
-478. | Clinica_B        392 |
-479. | Clinica_C        452 |
-480. |   Publico        624 |
-     |----------------------|
-481. | Clinica_A        238 |
-482. | Clinica_B        552 |
-483. | Clinica_C         12 |
-484. |   Publico        408 |
-485. | Clinica_A        416 |
-     |----------------------|
-486. | Clinica_B         52 |
-487. | Clinica_C        196 |
-488. |   Publico        508 |
-489. | Clinica_A        448 |
-490. | Clinica_B        536 |
-     |----------------------|
-491. | Clinica_C        132 |
-492. |   Publico        596 |
-493. | Clinica_A        488 |
-494. | Clinica_B        728 |
-495. | Clinica_C        482 |
-     |----------------------|
-496. |   Publico         20 |
-497. | Clinica_A        800 |
-498. | Clinica_B        376 |
-499. | Clinica_C        708 |
-500. |   Publico        556 |
-     |----------------------|
-501. | Clinica_A        668 |
-502. | Clinica_B        772 |
-503. | Clinica_C        612 |
-504. |   Publico         75 |
-505. | Clinica_A        312 |
-     |----------------------|
-506. | Clinica_B        476 |
-507. | Clinica_C        632 |
-508. |   Publico        296 |
-509. | Clinica_A        404 |
-510. | Clinica_B        263 |
-     |----------------------|
-511. | Clinica_C        116 |
-512. |   Publico        192 |
-513. | Clinica_A         28 |
-514. | Clinica_B        648 |
-515. | Clinica_C        124 |
-     |----------------------|
-516. |   Publico        532 |
-517. | Clinica_A        608 |
-518. | Clinica_B         96 |
-519. | Clinica_C        660 |
-520. |   Publico        636 |
-     |----------------------|
-521. | Clinica_A        156 |
-522. | Clinica_B        592 |
-523. | Clinica_C        696 |
-524. |   Publico        380 |
-525. | Clinica_A        588 |
-     |----------------------|
-526. | Clinica_B         16 |
-527. | Clinica_C        496 |
-528. |   Publico        616 |
-529. | Clinica_A        104 |
-530. | Clinica_B        164 |
-     |----------------------|
-531. | Clinica_C        276 |
-532. |   Publico        724 |
-533. | Clinica_A        208 |
-534. | Clinica_B        360 |
-535. | Clinica_C        248 |
-     |----------------------|
-536. |   Publico        704 |
-537. | Clinica_A        732 |
-538. | Clinica_B        220 |
-539. | Clinica_C        264 |
-540. |   Publico        736 |
-     |----------------------|
-541. | Clinica_A        280 |
-542. | Clinica_B        544 |
-543. | Clinica_C        320 |
-544. |   Publico        480 |
-545. | Clinica_A        356 |
-     |----------------------|
-546. | Clinica_B         44 |
-547. | Clinica_C        564 |
-548. |   Publico        232 |
-549. | Clinica_A        344 |
-550. | Clinica_B        524 |
-     |----------------------|
-551. | Clinica_C        136 |
-552. |   Publico        644 |
-553. | Clinica_A        224 |
-554. | Clinica_B        796 |
-555. | Clinica_C        364 |
-     |----------------------|
-556. |   Publico        512 |
-557. | Clinica_A         40 |
-558. | Clinica_B        200 |
-559. | Clinica_C         80 |
-560. |   Publico        522 |
-     |----------------------|
-561. | Clinica_A         76 |
-562. | Clinica_B        160 |
-563. | Clinica_C         64 |
-564. |   Publico        560 |
-565. | Clinica_A        154 |
-     |----------------------|
-566. | Clinica_B        436 |
-567. | Clinica_C        580 |
-568. |   Publico        628 |
-569. | Clinica_A        642 |
-570. | Clinica_B        682 |
-     |----------------------|
-571. | Clinica_C         78 |
-572. |   Publico        278 |
-573. | Clinica_A        514 |
-574. | Clinica_B        398 |
-575. | Clinica_C          3 |
-     |----------------------|
-576. |   Publico         11 |
-577. | Clinica_A         23 |
-578. | Clinica_B        107 |
-579. | Clinica_C        179 |
-580. |   Publico         83 |
-     |----------------------|
-581. | Clinica_A        171 |
-582. | Clinica_B        275 |
-583. | Clinica_C        267 |
-584. |   Publico        319 |
-585. | Clinica_A        219 |
-     |----------------------|
-586. | Clinica_B        271 |
-587. | Clinica_C        359 |
-588. |   Publico        388 |
-589. | Clinica_A         95 |
-590. | Clinica_B        695 |
-     |----------------------|
-591. | Clinica_C        155 |
-592. |   Publico        203 |
-593. | Clinica_A        111 |
-594. | Clinica_B        519 |
-595. | Clinica_C        487 |
-     |----------------------|
-596. |   Publico        607 |
-597. | Clinica_A        623 |
-598. | Clinica_B         71 |
-599. | Clinica_C        583 |
-600. |   Publico        315 |
-     |----------------------|
-601. | Clinica_A        247 |
-602. | Clinica_B        635 |
-603. | Clinica_C        575 |
-604. |   Publico        439 |
-605. | Clinica_A        467 |
-     |----------------------|
-606. | Clinica_B        783 |
-607. | Clinica_C        507 |
-608. |   Publico        767 |
-609. | Clinica_A        103 |
-610. | Clinica_B        591 |
-     |----------------------|
-611. | Clinica_C        335 |
-612. |   Publico        459 |
-613. | Clinica_A        139 |
-614. | Clinica_B        331 |
-615. | Clinica_C        279 |
-     |----------------------|
-616. |   Publico        211 |
-617. | Clinica_A        363 |
-618. | Clinica_B        311 |
-619. | Clinica_C        283 |
-620. |   Publico        739 |
-     |----------------------|
-621. | Clinica_A        511 |
-622. | Clinica_B        303 |
-623. | Clinica_C        463 |
-624. |   Publico        495 |
-625. | Clinica_A        587 |
-     |----------------------|
-626. | Clinica_B        735 |
-627. | Clinica_C        123 |
-628. |   Publico        747 |
-629. | Clinica_A        299 |
-630. | Clinica_B        327 |
-     |----------------------|
-631. | Clinica_C        323 |
-632. |   Publico        647 |
-633. | Clinica_A        135 |
-634. | Clinica_B        231 |
-635. | Clinica_C        239 |
-     |----------------------|
-636. |   Publico        395 |
-637. | Clinica_A        347 |
-638. | Clinica_B         14 |
-639. | Clinica_C        314 |
-640. |   Publico        699 |
-     |----------------------|
-641. | Clinica_A        172 |
-642. | Clinica_B        675 |
-643. | Clinica_C        503 |
-644. |   Publico        614 |
-645. | Clinica_A        336 |
-     |----------------------|
-646. | Clinica_B        779 |
-647. | Clinica_C         67 |
-648. |   Publico        243 |
-649. | Clinica_A        543 |
-650. | Clinica_B        295 |
-     |----------------------|
-651. | Clinica_C        403 |
-652. |   Publico        723 |
-653. | Clinica_A        399 |
-654. | Clinica_B        427 |
-655. | Clinica_C        707 |
-     |----------------------|
-656. |   Publico        112 |
-657. | Clinica_A        127 |
-658. | Clinica_B        468 |
-659. | Clinica_C        291 |
-660. |   Publico        118 |
-     |----------------------|
-661. | Clinica_A         31 |
-662. | Clinica_B        430 |
-663. | Clinica_C        741 |
-664. |   Publico         79 |
-665. | Clinica_A         91 |
-     |----------------------|
-666. | Clinica_B        743 |
-667. | Clinica_C        162 |
-668. |   Publico        563 |
-669. | Clinica_A        527 |
-670. | Clinica_B         39 |
-     |----------------------|
-671. | Clinica_C        715 |
-672. |   Publico         43 |
-673. | Clinica_A         99 |
-674. | Clinica_B        615 |
-675. | Clinica_C        683 |
-     |----------------------|
-676. |   Publico        131 |
-677. | Clinica_A        195 |
-678. | Clinica_B        775 |
-679. | Clinica_C        251 |
-680. |   Publico        619 |
-     |----------------------|
-681. | Clinica_A         47 |
-682. | Clinica_B        375 |
-683. | Clinica_C        287 |
-684. |   Publico        151 |
-685. | Clinica_A        571 |
-     |----------------------|
-686. | Clinica_B        367 |
-687. | Clinica_C        687 |
-688. |   Publico         55 |
-689. | Clinica_A        215 |
-690. | Clinica_B        415 |
-     |----------------------|
-691. | Clinica_C        479 |
-692. |   Publico        147 |
-693. | Clinica_A        671 |
-694. | Clinica_B        443 |
-695. | Clinica_C        603 |
-     |----------------------|
-696. |   Publico          7 |
-697. | Clinica_A        674 |
-698. | Clinica_B        725 |
-699. | Clinica_C        158 |
-700. |   Publico        737 |
-     |----------------------|
-701. | Clinica_A        759 |
-702. | Clinica_B        795 |
-703. | Clinica_C        729 |
-704. |   Publico        733 |
-705. | Clinica_A        598 |
-     |----------------------|
-706. | Clinica_B        442 |
-707. | Clinica_C        602 |
-708. |   Publico        554 |
-709. | Clinica_A        562 |
-710. | Clinica_B         15 |
-     |----------------------|
-711. | Clinica_C        451 |
-712. |   Publico        567 |
-713. | Clinica_A         27 |
-714. | Clinica_B        435 |
-715. | Clinica_C        579 |
-     |----------------------|
-716. |   Publico        419 |
-717. | Clinica_A        523 |
-718. | Clinica_B        787 |
-719. | Clinica_C         19 |
-720. |   Publico        763 |
-     |----------------------|
-721. | Clinica_A        551 |
-722. | Clinica_B        627 |
-723. | Clinica_C        631 |
-724. |   Publico        547 |
-725. | Clinica_A        791 |
-     |----------------------|
-726. | Clinica_B        651 |
-727. | Clinica_C        771 |
-728. |   Publico        191 |
-729. | Clinica_A        539 |
-730. | Clinica_B        679 |
-     |----------------------|
-731. | Clinica_C        491 |
-732. |   Publico        599 |
-733. | Clinica_A        655 |
-734. | Clinica_B        383 |
-735. | Clinica_C        555 |
-     |----------------------|
-736. |   Publico         35 |
-737. | Clinica_A        307 |
-738. | Clinica_B         51 |
-739. | Clinica_C        371 |
-740. |   Publico         59 |
-     |----------------------|
-741. | Clinica_A        355 |
-742. | Clinica_B        499 |
-743. | Clinica_C        447 |
-744. |   Publico        531 |
-745. | Clinica_A        535 |
-     |----------------------|
-746. | Clinica_B         63 |
-747. | Clinica_C        595 |
-748. |   Publico        727 |
-749. | Clinica_A        387 |
-750. | Clinica_B        431 |
-     |----------------------|
-751. | Clinica_C        339 |
-752. |   Publico        343 |
-753. | Clinica_A        471 |
-754. | Clinica_B        515 |
-755. | Clinica_C        187 |
-     |----------------------|
-756. |   Publico        379 |
-757. | Clinica_A        643 |
-758. | Clinica_B        483 |
-759. | Clinica_C        711 |
-760. |   Publico        559 |
-     |----------------------|
-761. | Clinica_A        235 |
-762. | Clinica_B        659 |
-763. | Clinica_C        691 |
-764. |   Publico        611 |
-765. | Clinica_A        799 |
-     |----------------------|
-766. | Clinica_B        751 |
-767. | Clinica_C         87 |
-768. |   Publico        455 |
-769. | Clinica_A        407 |
-770. | Clinica_B        119 |
-     |----------------------|
-771. | Clinica_C        115 |
-772. |   Publico        475 |
-773. | Clinica_A        143 |
-774. | Clinica_B        183 |
-775. | Clinica_C        223 |
-     |----------------------|
-776. |   Publico        255 |
-777. | Clinica_A        163 |
-778. | Clinica_B        351 |
-779. | Clinica_C        731 |
-780. |   Publico        663 |
-     |----------------------|
-781. | Clinica_A        259 |
-782. | Clinica_B        411 |
-783. | Clinica_C        175 |
-784. |   Publico        719 |
-785. | Clinica_A        199 |
-     |----------------------|
-786. | Clinica_B        227 |
-787. | Clinica_C        755 |
-788. |   Publico        667 |
-789. | Clinica_A        159 |
-790. | Clinica_B        391 |
-     |----------------------|
-791. | Clinica_C        703 |
-792. |   Publico        167 |
-793. | Clinica_A        207 |
-794. | Clinica_B        423 |
-795. | Clinica_C        594 |
-     |----------------------|
-796. |   Publico        558 |
-797. | Clinica_A        678 |
-798. | Clinica_B        798 |
-799. | Clinica_C        718 |
-800. |   Publico        518 |
+  2. | Clinica_B         70 |
+  3. | Clinica_C        179 |
+  4. |   Publico        314 |
+  5. | Clinica_A        284 |
+     |----------------------|
+  6. | Clinica_B        175 |
+  7. | Clinica_C          5 |
+  8. |   Publico        450 |
+  9. | Clinica_A          . |
+ 10. | Clinica_B        109 |
+     |----------------------|
+ 11. | Clinica_C        549 |
+ 12. |   Publico        582 |
+ 13. | Clinica_A          . |
+ 14. | Clinica_B        490 |
+ 15. | Clinica_C        105 |
+     |----------------------|
+ 16. |   Publico        349 |
+ 17. | Clinica_A          . |
+ 18. | Clinica_B        140 |
+ 19. | Clinica_C        552 |
+ 20. |   Publico        453 |
+     |----------------------|
+ 21. | Clinica_A          . |
+ 22. | Clinica_B        352 |
+ 23. | Clinica_C         35 |
+ 24. |   Publico        519 |
+ 25. | Clinica_A          . |
+     |----------------------|
+ 26. | Clinica_B        245 |
+ 27. | Clinica_C        318 |
+ 28. |   Publico        386 |
+ 29. | Clinica_A        483 |
+ 30. | Clinica_B        383 |
+     |----------------------|
+ 31. | Clinica_C         74 |
+ 32. |   Publico        417 |
+ 33. | Clinica_A        646 |
+ 34. | Clinica_B        144 |
+ 35. | Clinica_C        249 |
+     |----------------------|
+ 36. |   Publico         24 |
+ 37. | Clinica_A         63 |
+ 38. | Clinica_B          . |
+ 39. | Clinica_C        265 |
+ 40. |   Publico        640 |
+     |----------------------|
+ 41. | Clinica_A        199 |
+ 42. | Clinica_B        242 |
+ 43. | Clinica_C        168 |
+ 44. |   Publico        440 |
+ 45. | Clinica_A        368 |
+     |----------------------|
+ 46. | Clinica_B        480 |
+ 47. | Clinica_C        172 |
+ 48. |   Publico        402 |
+ 49. | Clinica_A          . |
+ 50. | Clinica_B        611 |
+     |----------------------|
+ 51. | Clinica_C        604 |
+ 52. |   Publico        643 |
+ 53. | Clinica_A          . |
+ 54. | Clinica_B        469 |
+ 55. | Clinica_C        307 |
+     |----------------------|
+ 56. |   Publico        568 |
+ 57. | Clinica_A          . |
+ 58. | Clinica_B        675 |
+ 59. | Clinica_C        506 |
+ 60. |   Publico         32 |
+     |----------------------|
+ 61. | Clinica_A          . |
+ 62. | Clinica_B        447 |
+ 63. | Clinica_C        636 |
+ 64. |   Publico        230 |
+ 65. | Clinica_A        234 |
+     |----------------------|
+ 66. | Clinica_B        238 |
+ 67. | Clinica_C        164 |
+ 68. |   Publico        376 |
+ 69. | Clinica_A        477 |
+ 70. | Clinica_B        269 |
+     |----------------------|
+ 71. | Clinica_C        576 |
+ 72. |   Publico         28 |
+ 73. | Clinica_A         67 |
+ 74. | Clinica_B        342 |
+ 75. | Clinica_C        510 |
+     |----------------------|
+ 76. |   Publico        129 |
+ 77. | Clinica_A        195 |
+ 78. | Clinica_B          . |
+ 79. | Clinica_C        406 |
+ 80. |   Publico        572 |
+     |----------------------|
+ 81. | Clinica_A        277 |
+ 82. | Clinica_B        539 |
+ 83. | Clinica_C        203 |
+ 84. |   Publico        436 |
+ 85. | Clinica_A        125 |
+     |----------------------|
+ 86. | Clinica_B        311 |
+ 87. | Clinica_C         56 |
+ 88. |   Publico        334 |
+ 89. | Clinica_A          . |
+ 90. | Clinica_B        444 |
+     |----------------------|
+ 91. | Clinica_C         59 |
+ 92. |   Publico        300 |
+ 93. | Clinica_A          . |
+ 94. | Clinica_B         94 |
+ 95. | Clinica_C        414 |
+     |----------------------|
+ 96. |   Publico        668 |
+ 97. | Clinica_A          . |
+ 98. | Clinica_B        380 |
+ 99. | Clinica_C        473 |
+100. |   Publico        535 |
+     |----------------------|
+101. | Clinica_A          . |
+102. | Clinica_B        160 |
+103. | Clinica_C        632 |
+104. |   Publico        169 |
+105. | Clinica_A        273 |
+     |----------------------|
+106. | Clinica_B        372 |
+107. | Clinica_C        410 |
+108. |   Publico         55 |
+109. | Clinica_A         90 |
+110. | Clinica_B        133 |
+     |----------------------|
+111. | Clinica_C        502 |
+112. |   Publico        600 |
+113. | Clinica_A        579 |
+114. | Clinica_B        664 |
+115. | Clinica_C        102 |
+     |----------------------|
+116. |   Publico        672 |
+117. | Clinica_A        346 |
+118. | Clinica_B          . |
+119. | Clinica_C        338 |
+120. |   Publico        546 |
+     |----------------------|
+121. | Clinica_A         95 |
+122. | Clinica_B         98 |
+123. | Clinica_C        608 |
+124. |   Publico        207 |
+125. | Clinica_A        516 |
+     |----------------------|
+126. | Clinica_B        137 |
+127. | Clinica_C        543 |
+128. |   Publico        513 |
+129. | Clinica_A          . |
+130. | Clinica_B          2 |
+     |----------------------|
+131. | Clinica_C         15 |
+132. |   Publico        176 |
+133. | Clinica_A          . |
+134. | Clinica_B        218 |
+135. | Clinica_C        246 |
+     |----------------------|
+136. |   Publico        145 |
+137. | Clinica_A          . |
+138. | Clinica_B        474 |
+139. | Clinica_C        353 |
+140. |   Publico        601 |
+     |----------------------|
+141. | Clinica_A          . |
+142. | Clinica_B        665 |
+143. | Clinica_C        116 |
+144. |   Publico        186 |
+145. | Clinica_A        315 |
+     |----------------------|
+146. | Clinica_B        588 |
+147. | Clinica_C        620 |
+148. |   Publico         46 |
+149. | Clinica_A        585 |
+150. | Clinica_B        661 |
+     |----------------------|
+151. | Clinica_C        424 |
+152. |   Publico        553 |
+153. | Clinica_A        540 |
+154. | Clinica_B        427 |
+155. | Clinica_C        562 |
+     |----------------------|
+156. |   Publico        250 |
+157. | Clinica_A        617 |
+158. | Clinica_B          . |
+159. | Clinica_C        281 |
+160. |   Publico        536 |
+     |----------------------|
+161. | Clinica_A        605 |
+162. | Clinica_B        215 |
+163. | Clinica_C        633 |
+164. |   Publico        365 |
+165. | Clinica_A        573 |
+     |----------------------|
+166. | Clinica_B        669 |
+167. | Clinica_C        221 |
+168. |   Publico        437 |
+169. | Clinica_A          . |
+170. | Clinica_B        637 |
+     |----------------------|
+171. | Clinica_C          9 |
+172. |   Publico        559 |
+173. | Clinica_A          . |
+174. | Clinica_B        106 |
+175. | Clinica_C        496 |
+     |----------------------|
+176. |   Publico        110 |
+177. | Clinica_A          . |
+178. | Clinica_B        294 |
+179. | Clinica_C        652 |
+180. |   Publico        322 |
+     |----------------------|
+181. | Clinica_A          . |
+182. | Clinica_B        430 |
+183. | Clinica_C         75 |
+184. |   Publico        499 |
+185. | Clinica_A        259 |
+     |----------------------|
+186. | Clinica_B         12 |
+187. | Clinica_C        547 |
+188. |   Publico        591 |
+189. | Clinica_A         40 |
+190. | Clinica_B        614 |
+     |----------------------|
+191. | Clinica_C        253 |
+192. |   Publico        256 |
+193. | Clinica_A        649 |
+194. | Clinica_B        390 |
+195. | Clinica_C        520 |
+     |----------------------|
+196. |   Publico         43 |
+197. | Clinica_A        597 |
+198. | Clinica_B          . |
+199. | Clinica_C        396 |
+200. |   Publico        523 |
+     |----------------------|
+201. | Clinica_A         81 |
+202. | Clinica_B        288 |
+203. | Clinica_C        291 |
+204. |   Publico        325 |
+205. | Clinica_A         84 |
+     |----------------------|
+206. | Clinica_B        224 |
+207. | Clinica_C        319 |
+208. |   Publico        387 |
+209. | Clinica_A          . |
+210. | Clinica_B        629 |
+     |----------------------|
+211. | Clinica_C        503 |
+212. |   Publico        626 |
+213. | Clinica_A          . |
+214. | Clinica_B        407 |
+215. | Clinica_C        441 |
+     |----------------------|
+216. |   Publico        411 |
+217. | Clinica_A          . |
+218. | Clinica_B        569 |
+219. | Clinica_C        470 |
+220. |   Publico        121 |
+     |----------------------|
+221. | Clinica_A          . |
+222. | Clinica_B        655 |
+223. | Clinica_C        489 |
+224. |   Publico        594 |
+225. | Clinica_A        154 |
+     |----------------------|
+226. | Clinica_B        487 |
+227. | Clinica_C        486 |
+228. |   Publico        210 |
+229. | Clinica_A        214 |
+230. | Clinica_B        420 |
+     |----------------------|
+231. | Clinica_C        359 |
+232. |   Publico        377 |
+233. | Clinica_A          6 |
+234. | Clinica_B        356 |
+235. | Clinica_C        211 |
+     |----------------------|
+236. |   Publico        148 |
+237. | Clinica_A        151 |
+238. | Clinica_B          . |
+239. | Clinica_C        393 |
+240. |   Publico        421 |
+     |----------------------|
+241. | Clinica_A        466 |
+242. | Clinica_B        150 |
+243. | Clinica_C        577 |
+244. |   Publico        251 |
+245. | Clinica_A        595 |
+     |----------------------|
+246. | Clinica_B        183 |
+247. | Clinica_C        460 |
+248. |   Publico        403 |
+249. | Clinica_A          . |
+250. | Clinica_B        457 |
+     |----------------------|
+251. | Clinica_C        189 |
+252. |   Publico        565 |
+253. | Clinica_A          . |
+254. | Clinica_B        658 |
+255. | Clinica_C         36 |
+     |----------------------|
+256. |   Publico        362 |
+257. | Clinica_A          . |
+258. | Clinica_B        399 |
+259. | Clinica_C        328 |
+260. |   Publico        493 |
+     |----------------------|
+261. | Clinica_A          . |
+262. | Clinica_B        532 |
+263. | Clinica_C         49 |
+264. |   Publico        113 |
+265. | Clinica_A        180 |
+     |----------------------|
+266. | Clinica_B        433 |
+267. | Clinica_C        623 |
+268. |   Publico        369 |
+269. | Clinica_A        507 |
+270. | Clinica_B        556 |
+     |----------------------|
+271. | Clinica_C         65 |
+272. |   Publico        542 |
+273. | Clinica_A        228 |
+274. | Clinica_B        351 |
+275. | Clinica_C        413 |
+     |----------------------|
+276. |   Publico        479 |
+277. | Clinica_A        571 |
+278. | Clinica_B          . |
+279. | Clinica_C        603 |
+280. |   Publico        272 |
+     |----------------------|
+281. | Clinica_A        434 |
+282. | Clinica_B        526 |
+283. | Clinica_C        379 |
+284. |   Publico        482 |
+285. | Clinica_A        454 |
+     |----------------------|
+286. | Clinica_B        463 |
+287. | Clinica_C         18 |
+288. |   Publico        196 |
+289. | Clinica_A          . |
+290. | Clinica_B        270 |
+     |----------------------|
+291. | Clinica_C        331 |
+292. |   Publico        130 |
+293. | Clinica_A          . |
+294. | Clinica_B         60 |
+295. | Clinica_C        266 |
+     |----------------------|
+296. |   Publico        301 |
+297. | Clinica_A          . |
+298. | Clinica_B         87 |
+299. | Clinica_C        126 |
+300. |   Publico        339 |
+     |----------------------|
+301. | Clinica_A          . |
+302. | Clinica_B        308 |
+303. | Clinica_C        274 |
+304. |   Publico         39 |
+305. | Clinica_A        280 |
+     |----------------------|
+306. | Clinica_B         71 |
+307. | Clinica_C         78 |
+308. |   Publico        119 |
+309. | Clinica_A        529 |
+310. | Clinica_B        285 |
+     |----------------------|
+311. | Clinica_C         51 |
+312. |   Publico        518 |
+313. | Clinica_A        112 |
+314. | Clinica_B        631 |
+315. | Clinica_C        118 |
+     |----------------------|
+316. |   Publico        551 |
+317. | Clinica_A        327 |
+318. | Clinica_B          . |
+319. | Clinica_C        115 |
+320. |   Publico        124 |
+     |----------------------|
+321. | Clinica_A         21 |
+322. | Clinica_B        262 |
+323. | Clinica_C        157 |
+324. |   Publico        231 |
+325. | Clinica_A        235 |
+     |----------------------|
+326. | Clinica_B        239 |
+327. | Clinica_C         29 |
+328. |   Publico        227 |
+329. | Clinica_A          . |
+330. | Clinica_B         25 |
+     |----------------------|
+331. | Clinica_C        165 |
+332. |   Publico        343 |
+333. | Clinica_A          . |
+334. | Clinica_B         64 |
+335. | Clinica_C        204 |
+     |----------------------|
+336. |   Publico         91 |
+337. | Clinica_A          . |
+338. | Clinica_B        192 |
+339. | Clinica_C         99 |
+340. |   Publico        200 |
+     |----------------------|
+341. | Clinica_A          . |
+342. | Clinica_B        161 |
+343. | Clinica_C        335 |
+344. |   Publico         52 |
+345. | Clinica_A        122 |
+     |----------------------|
+346. | Clinica_B        297 |
+347. | Clinica_C        304 |
+348. |   Publico         27 |
+349. | Clinica_A          . |
+350. | Clinica_B         62 |
+     |----------------------|
+351. | Clinica_C        171 |
+352. |   Publico        671 |
+353. | Clinica_A         31 |
+354. | Clinica_B         66 |
+355. | Clinica_C         34 |
+     |----------------------|
+356. |   Publico        174 |
+357. | Clinica_A         69 |
+358. | Clinica_B          . |
+359. | Clinica_C        134 |
+360. |   Publico         97 |
+     |----------------------|
+361. | Clinica_A        167 |
+362. | Clinica_B        101 |
+363. | Clinica_C        136 |
+364. |   Publico        104 |
+365. | Clinica_A        139 |
+     |----------------------|
+366. | Clinica_B        132 |
+367. | Clinica_C          4 |
+368. |   Publico        456 |
+369. | Clinica_A          . |
+370. | Clinica_B        371 |
+     |----------------------|
+371. | Clinica_C        188 |
+372. |   Publico        515 |
+373. | Clinica_A          . |
+374. | Clinica_B        426 |
+375. | Clinica_C        226 |
+     |----------------------|
+376. |   Publico        449 |
+377. | Clinica_A          . |
+378. | Clinica_B        209 |
+379. | Clinica_C        642 |
+380. |   Publico        233 |
+     |----------------------|
+381. | Clinica_A          . |
+382. | Clinica_B        237 |
+383. | Clinica_C        645 |
+384. |   Publico         45 |
+385. | Clinica_A        590 |
+     |----------------------|
+386. | Clinica_B        185 |
+387. | Clinica_C        651 |
+388. |   Publico        584 |
+389. | Clinica_A         73 |
+390. | Clinica_B         77 |
+     |----------------------|
+391. | Clinica_C        252 |
+392. |   Publico        213 |
+393. | Clinica_A        639 |
+394. | Clinica_B        220 |
+395. | Clinica_C        472 |
+     |----------------------|
+396. |   Publico        345 |
+397. | Clinica_A        596 |
+398. | Clinica_B          . |
+399. | Clinica_C          8 |
+400. |   Publico        153 |
+     |----------------------|
+401. | Clinica_A        622 |
+402. | Clinica_B          . |
+403. | Clinica_C        599 |
+404. |   Publico        223 |
+405. | Clinica_A        398 |
+     |----------------------|
+406. | Clinica_B        610 |
+407. | Clinica_C        395 |
+408. |   Publico        531 |
+409. | Clinica_A          . |
+410. | Clinica_B         20 |
+     |----------------------|
+411. | Clinica_C        492 |
+412. |   Publico        446 |
+413. | Clinica_A          . |
+414. | Clinica_B        303 |
+415. | Clinica_C        159 |
+     |----------------------|
+416. |   Publico        575 |
+417. | Clinica_A          . |
+418. | Clinica_B        409 |
+419. | Clinica_C        163 |
+420. |   Publico        217 |
+     |----------------------|
+421. | Clinica_A          . |
+422. | Clinica_B        348 |
+423. | Clinica_C        143 |
+424. |   Publico        182 |
+425. | Clinica_A        191 |
+     |----------------------|
+426. | Clinica_B        625 |
+427. | Clinica_C        229 |
+428. |   Publico        244 |
+429. | Clinica_A        194 |
+430. | Clinica_B        429 |
+     |----------------------|
+431. | Clinica_C        674 |
+432. |   Publico        443 |
+433. | Clinica_A        206 |
+434. | Clinica_B        264 |
+435. | Clinica_C        657 |
+     |----------------------|
+436. |   Publico        578 |
+437. | Clinica_A        287 |
+438. | Clinica_B          . |
+439. | Clinica_C        587 |
+440. |   Publico        548 |
+     |----------------------|
+441. | Clinica_A        648 |
+442. | Clinica_B          . |
+443. | Clinica_C        660 |
+444. |   Publico         38 |
+445. | Clinica_A        261 |
+     |----------------------|
+446. | Clinica_B        198 |
+447. | Clinica_C        613 |
+448. |   Publico        324 |
+449. | Clinica_A          . |
+450. | Clinica_B         86 |
+     |----------------------|
+451. | Clinica_C        290 |
+452. |   Publico        299 |
+453. | Clinica_A          . |
+454. | Clinica_B        313 |
+455. | Clinica_C         48 |
+     |----------------------|
+456. |   Publico        419 |
+457. | Clinica_A          . |
+458. | Clinica_B        248 |
+459. | Clinica_C        128 |
+460. |   Publico        296 |
+     |----------------------|
+461. | Clinica_A          . |
+462. | Clinica_B        178 |
+463. | Clinica_C         42 |
+464. |   Publico        156 |
+465. | Clinica_A        667 |
+     |----------------------|
+466. | Clinica_B        358 |
+467. | Clinica_C         58 |
+468. |   Publico        202 |
+469. | Clinica_A        367 |
+470. | Clinica_B        279 |
+     |----------------------|
+471. | Clinica_C        416 |
+472. |   Publico        317 |
+473. | Clinica_A        452 |
+474. | Clinica_B        468 |
+475. | Clinica_C         54 |
+     |----------------------|
+476. |   Publico        538 |
+477. | Clinica_A         89 |
+478. | Clinica_B          . |
+479. | Clinica_C        310 |
+480. |   Publico        485 |
+     |----------------------|
+481. | Clinica_A        333 |
+482. | Clinica_B          . |
+483. | Clinica_C        401 |
+484. |   Publico        364 |
+485. | Clinica_A        628 |
+     |----------------------|
+486. | Clinica_B        495 |
+487. | Clinica_C        498 |
+488. |   Publico        607 |
+489. | Clinica_A          . |
+490. | Clinica_B         80 |
+     |----------------------|
+491. | Clinica_C        581 |
+492. |   Publico         93 |
+493. | Clinica_A          . |
+494. | Clinica_B        255 |
+495. | Clinica_C        558 |
+     |----------------------|
+496. |   Publico        283 |
+497. | Clinica_A          . |
+498. | Clinica_B        501 |
+499. | Clinica_C        306 |
+500. |   Publico        663 |
+     |----------------------|
+501. | Clinica_A          . |
+502. | Clinica_B        561 |
+503. | Clinica_C         11 |
+504. |   Publico        423 |
+505. | Clinica_A        619 |
+     |----------------------|
+506. | Clinica_B        355 |
+507. | Clinica_C        462 |
+508. |   Publico        361 |
+509. | Clinica_A         14 |
+510. | Clinica_B        341 |
+     |----------------------|
+511. | Clinica_C        392 |
+512. |   Publico        509 |
+513. | Clinica_A        593 |
+514. | Clinica_B          . |
+515. | Clinica_C        525 |
+     |----------------------|
+516. |   Publico        528 |
+517. | Clinica_A        534 |
+518. | Clinica_B          . |
+519. | Clinica_C        147 |
+520. |   Publico        375 |
+     |----------------------|
+521. | Clinica_A        382 |
+522. | Clinica_B          . |
+523. | Clinica_C        635 |
+524. |   Publico        276 |
+525. | Clinica_A        435 |
+     |----------------------|
+526. | Clinica_B        241 |
+527. | Clinica_C        108 |
+528. |   Publico        459 |
+529. | Clinica_A          . |
+530. | Clinica_B        321 |
+     |----------------------|
+531. | Clinica_C        385 |
+532. |   Publico        567 |
+533. | Clinica_A          . |
+534. | Clinica_B        389 |
+535. | Clinica_C        432 |
+     |----------------------|
+536. |   Publico        465 |
+537. | Clinica_A          . |
+538. | Clinica_B        439 |
+539. | Clinica_C         17 |
+540. |   Publico        677 |
+     |----------------------|
+541. | Clinica_A          . |
+542. | Clinica_B        258 |
+543. | Clinica_C        564 |
+544. |   Publico        654 |
+545. | Clinica_A        268 |
+     |----------------------|
+546. | Clinica_B        616 |
+547. | Clinica_C        476 |
+548. |   Publico        505 |
+549. | Clinica_A        512 |
+550. | Clinica_B         23 |
+     |----------------------|
+551. | Clinica_C        522 |
+552. |   Publico        254 |
+553. | Clinica_A        330 |
+554. | Clinica_B          . |
+555. | Clinica_C        555 |
+     |----------------------|
+556. |   Publico          3 |
+557. | Clinica_A         10 |
+558. | Clinica_B          . |
+559. | Clinica_C         92 |
+560. |   Publico        312 |
+     |----------------------|
+561. | Clinica_A        212 |
+562. | Clinica_B          . |
+563. | Clinica_C        350 |
+564. |   Publico        467 |
+565. | Clinica_A        370 |
+     |----------------------|
+566. | Clinica_B        236 |
+567. | Clinica_C        257 |
+568. |   Publico        615 |
+569. | Clinica_A          . |
+570. | Clinica_B        602 |
+     |----------------------|
+571. | Clinica_C         19 |
+572. |   Publico        177 |
+573. | Clinica_A          . |
+574. | Clinica_B         57 |
+575. | Clinica_C        190 |
+     |----------------------|
+576. |   Publico         30 |
+577. | Clinica_A          . |
+578. | Clinica_B         61 |
+579. | Clinica_C        275 |
+580. |   Publico        662 |
+     |----------------------|
+581. | Clinica_A          . |
+582. | Clinica_B        404 |
+583. | Clinica_C        592 |
+584. |   Publico        422 |
+585. | Clinica_A        381 |
+     |----------------------|
+586. | Clinica_B        438 |
+587. | Clinica_C        634 |
+588. |   Publico        107 |
+589. | Clinica_A        260 |
+590. | Clinica_B        166 |
+     |----------------------|
+591. | Clinica_C        464 |
+592. |   Publico        425 |
+593. | Clinica_A        155 |
+594. | Clinica_B          . |
+595. | Clinica_C        201 |
+     |----------------------|
+596. |   Publico        282 |
+597. | Clinica_A        286 |
+598. | Clinica_B          . |
+599. | Clinica_C        554 |
+600. |   Publico        332 |
+     |----------------------|
+601. | Clinica_A        208 |
+602. | Clinica_B          . |
+603. | Clinica_C        344 |
+604. |   Publico        302 |
+605. | Clinica_A         44 |
+     |----------------------|
+606. | Clinica_B        298 |
+607. | Clinica_C        267 |
+608. |   Publico        323 |
+609. | Clinica_A          . |
+610. | Clinica_B        500 |
+     |----------------------|
+611. | Clinica_C         82 |
+612. |   Publico        650 |
+613. | Clinica_A          . |
+614. | Clinica_B        428 |
+615. | Clinica_C        624 |
+     |----------------------|
+616. |   Publico        504 |
+617. | Clinica_A          . |
+618. | Clinica_B        521 |
+619. | Clinica_C        149 |
+620. |   Publico        627 |
+     |----------------------|
+621. | Clinica_A          . |
+622. | Clinica_B        232 |
+623. | Clinica_C        240 |
+624. |   Publico        337 |
+625. | Clinica_A        448 |
+     |----------------------|
+626. | Clinica_B        216 |
+627. | Clinica_C        243 |
+628. |   Publico         16 |
+629. | Clinica_A        560 |
+630. | Clinica_B        514 |
+     |----------------------|
+631. | Clinica_C        647 |
+632. |   Publico        142 |
+633. | Clinica_A        621 |
+634. | Clinica_B          . |
+635. | Clinica_C        162 |
+     |----------------------|
+636. |   Publico        481 |
+637. | Clinica_A        418 |
+638. | Clinica_B          . |
+639. | Clinica_C        606 |
+640. |   Publico        336 |
+     |----------------------|
+641. | Clinica_A        511 |
+642. | Clinica_B          . |
+643. | Clinica_C        408 |
+644. |   Publico        445 |
+645. | Clinica_A        458 |
+     |----------------------|
+646. | Clinica_B        461 |
+647. | Clinica_C        618 |
+648. |   Publico        152 |
+649. | Clinica_A          . |
+650. | Clinica_B        612 |
+     |----------------------|
+651. | Clinica_C        570 |
+652. |   Publico        173 |
+653. | Clinica_A          . |
+654. | Clinica_B        222 |
+655. | Clinica_C        225 |
+     |----------------------|
+656. |   Publico        357 |
+657. | Clinica_A          . |
+658. | Clinica_B        197 |
+659. | Clinica_C        641 |
+660. |   Publico        374 |
+     |----------------------|
+661. | Clinica_A          . |
+662. | Clinica_B        666 |
+663. | Clinica_C         76 |
+664. |   Publico        103 |
+665. | Clinica_A        394 |
+     |----------------------|
+666. | Clinica_B        354 |
+667. | Clinica_C        366 |
+668. |   Publico        146 |
+669. | Clinica_A        340 |
+670. | Clinica_B        181 |
+     |----------------------|
+671. | Clinica_C        598 |
+672. |   Publico         41 |
+673. | Clinica_A        517 |
+674. | Clinica_B          . |
+675. | Clinica_C        127 |
+     |----------------------|
+676. |   Publico        384 |
+677. | Clinica_A        574 |
+678. | Clinica_B          . |
+679. | Clinica_C        184 |
+680. |   Publico        316 |
+     |----------------------|
+681. | Clinica_A        271 |
+682. | Clinica_B          . |
+683. | Clinica_C        295 |
+684. |   Publico        263 |
+685. | Clinica_A          . |
+     |----------------------|
+686. | Clinica_B        400 |
+687. | Clinica_C        397 |
+688. |   Publico        508 |
+689. | Clinica_A          . |
+690. | Clinica_B        138 |
+     |----------------------|
+691. | Clinica_C        656 |
+692. |   Publico        170 |
+693. | Clinica_A          . |
+694. | Clinica_B        219 |
+695. | Clinica_C        373 |
+     |----------------------|
+696. |   Publico         26 |
+697. | Clinica_A          . |
+698. | Clinica_B        455 |
+699. | Clinica_C        141 |
+700. |   Publico        630 |
+     |----------------------|
+701. | Clinica_A          . |
+702. | Clinica_B        360 |
+703. | Clinica_C        415 |
+704. |   Publico         33 |
+705. | Clinica_A        609 |
+     |----------------------|
+706. | Clinica_B         37 |
+707. | Clinica_C         47 |
+708. |   Publico        320 |
+709. | Clinica_A        484 |
+710. | Clinica_B        530 |
+     |----------------------|
+711. | Clinica_C         68 |
+712. |   Publico        187 |
+713. | Clinica_A        326 |
+714. | Clinica_B          . |
+715. | Clinica_C        131 |
+     |----------------------|
+716. |   Publico        491 |
+717. | Clinica_A        586 |
+718. | Clinica_B          . |
+719. | Clinica_C         79 |
+720. |   Publico        114 |
+     |----------------------|
+721. | Clinica_A         85 |
+722. | Clinica_B          . |
+723. | Clinica_C        589 |
+724. |   Publico         88 |
+725. | Clinica_A          . |
+     |----------------------|
+726. | Clinica_B        289 |
+727. | Clinica_C        292 |
+728. |   Publico          7 |
+729. | Clinica_A          . |
+730. | Clinica_B        158 |
+     |----------------------|
+731. | Clinica_C        193 |
+732. |   Publico        391 |
+733. | Clinica_A          . |
+734. | Clinica_B        488 |
+735. | Clinica_C        644 |
+     |----------------------|
+736. |   Publico         13 |
+737. | Clinica_A          . |
+738. | Clinica_B        363 |
+739. | Clinica_C        451 |
+740. |   Publico        378 |
+     |----------------------|
+741. | Clinica_A          . |
+742. | Clinica_B         22 |
+743. | Clinica_C        471 |
+744. |   Publico        670 |
+745. | Clinica_A        475 |
+     |----------------------|
+746. | Clinica_B        478 |
+747. | Clinica_C        557 |
+748. |   Publico        580 |
+749. | Clinica_A        497 |
+750. | Clinica_B        673 |
+     |----------------------|
+751. | Clinica_C        100 |
+752. |   Publico        305 |
+753. | Clinica_A        537 |
+754. | Clinica_B          . |
+755. | Clinica_C        541 |
+     |----------------------|
+756. |   Publico        123 |
+757. | Clinica_A        205 |
+758. | Clinica_B          . |
+759. | Clinica_C        566 |
+760. |   Publico        412 |
+     |----------------------|
+761. | Clinica_A        638 |
+762. | Clinica_B          . |
+763. | Clinica_C        329 |
+764. |   Publico        550 |
+765. | Clinica_A          . |
+     |----------------------|
+766. | Clinica_B        388 |
+767. | Clinica_C        431 |
+768. |   Publico        563 |
+769. | Clinica_A          . |
+770. | Clinica_B        676 |
+     |----------------------|
+771. | Clinica_C         50 |
+772. |   Publico        247 |
+773. | Clinica_A          . |
+774. | Clinica_B        544 |
+775. | Clinica_C         72 |
+     |----------------------|
+776. |   Publico        278 |
+777. | Clinica_A          . |
+778. | Clinica_B         96 |
+779. | Clinica_C        135 |
+780. |   Publico        533 |
+     |----------------------|
+781. | Clinica_A          . |
+782. | Clinica_B        117 |
+783. | Clinica_C         83 |
+784. |   Publico        111 |
+785. | Clinica_A        545 |
+     |----------------------|
+786. | Clinica_B        293 |
+787. | Clinica_C        659 |
+788. |   Publico        347 |
+789. | Clinica_A        405 |
+790. | Clinica_B         53 |
+     |----------------------|
+791. | Clinica_C        583 |
+792. |   Publico        120 |
+793. | Clinica_A        494 |
+794. | Clinica_B          . |
+795. | Clinica_C        442 |
+     |----------------------|
+796. |   Publico        309 |
+797. | Clinica_A        527 |
+798. | Clinica_B          . |
+799. | Clinica_C        524 |
+800. |   Publico        653 |
      +----------------------+
-
-. 
-. gen delta = ln(mkt_share) - ln(outside_op_mktsh)
-
-. 
-end of do-file
-
-. do "/var/folders/06/1jgdpt811cgbdsg2vx399sv00000gn/T//SD03967.000000"
-
-. xtset year
-
-Panel variable: year (balanced)
-
-. xtreg delta infraestructura puntaje_doctor precio
-
-Random-effects GLS regression                   Number of obs     =        800
-Group variable: year                            Number of groups  =         10
-
-R-squared:                                      Obs per group:
-     Within  = 0.4069                                         min =         80
-     Between = 0.5462                                         avg =       80.0
-     Overall = 0.4052                                         max =         80
-
-                                                Wald chi2(3)      =     542.24
-corr(u_i, X) = 0 (assumed)                      Prob > chi2       =     0.0000
-
----------------------------------------------------------------------------------
-          delta | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
-----------------+----------------------------------------------------------------
-infraestructura |   .4156451   .0293804    14.15   0.000     .3580605    .4732298
- puntaje_doctor |   .2183908   .0403507     5.41   0.000     .1393048    .2974768
-         precio |   -.088862   .0055025   -16.15   0.000    -.0996467   -.0780773
-          _cons |  -7.722794   .3252889   -23.74   0.000    -8.360349    -7.08524
-----------------+----------------------------------------------------------------
-        sigma_u |          0
-        sigma_e |  1.8248981
-            rho |          0   (fraction of variance due to u_i)
----------------------------------------------------------------------------------
-
-. 
-end of do-file
-
-. do "/var/folders/06/1jgdpt811cgbdsg2vx399sv00000gn/T//SD03967.000000"
 
 . drop z_infra z_operados z_doctores z_precio
 
 . 
-end of do-file
-
-. do "/var/folders/06/1jgdpt811cgbdsg2vx399sv00000gn/T//SD03967.000000"
-
-. xtset ciudad year
-repeated time values within panel
-r(451);
-
-end of do-file
-
-r(451);
-
-. do "/var/folders/06/1jgdpt811cgbdsg2vx399sv00000gn/T//SD03967.000000"
-
-. xtset year ciudad
-repeated time values within panel
-r(451);
-
-end of do-file
-
-r(451);
-
-. do "/var/folders/06/1jgdpt811cgbdsg2vx399sv00000gn/T//SD03967.000000"
-
-. sort ciudad year prestador
+. ** PRIMERA REGRESION
+. gen delta = ln(mkt_share) - ln(outside_op_mktsh)
+(123 missing values generated)
 
 . 
-end of do-file
-
-. do "/var/folders/06/1jgdpt811cgbdsg2vx399sv00000gn/T//SD03967.000000"
-
 . egen panel_id = group(ciudad prestador)
 
 . xtset panel_id year
@@ -1080,115 +1016,194 @@ Panel variable: panel_id (strongly balanced)
  Time variable: year, 2001 to 2010
          Delta: 1 unit
 
-. xtreg delta infraestructura puntaje_doctor precio
+. xtreg delta infraestructura puntaje_doctor precio, r
 
-Random-effects GLS regression                   Number of obs     =        800
+Random-effects GLS regression                   Number of obs     =        677
 Group variable: panel_id                        Number of groups  =         80
 
 R-squared:                                      Obs per group:
-     Within  = 0.4031                                         min =         10
-     Between = 0.4257                                         avg =       10.0
-     Overall = 0.4051                                         max =         10
+     Within  = 0.1421                                         min =          5
+     Between = 0.3209                                         avg =        8.5
+     Overall = 0.2273                                         max =         10
 
-                                                Wald chi2(3)      =     538.41
+                                                Wald chi2(3)      =     110.81
 corr(u_i, X) = 0 (assumed)                      Prob > chi2       =     0.0000
 
+                                 (Std. err. adjusted for 80 clusters in panel_id)
 ---------------------------------------------------------------------------------
-          delta | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+                |               Robust
+          delta | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
 ----------------+----------------------------------------------------------------
-infraestructura |   .3936924   .0292369    13.47   0.000     .3363892    .4509956
- puntaje_doctor |   .2202815   .0429235     5.13   0.000      .136153      .30441
-         precio |  -.0863305   .0052299   -16.51   0.000    -.0965809   -.0760801
-          _cons |  -7.617562   .3657646   -20.83   0.000    -8.334448   -6.900677
+infraestructura |   .3886981   .0472889     8.22   0.000     .2960136    .4813826
+ puntaje_doctor |   .2348978   .0505474     4.65   0.000     .1358267     .333969
+         precio |   -.233558   .0440443    -5.30   0.000    -.3198833   -.1472326
+          _cons |  -6.305753   .3764089   -16.75   0.000    -7.043501   -5.568005
 ----------------+----------------------------------------------------------------
-        sigma_u |  .86439216
-        sigma_e |  1.6080635
-            rho |  .22417172   (fraction of variance due to u_i)
+        sigma_u |   .5147691
+        sigma_e |  .55670328
+            rho |  .46092289   (fraction of variance due to u_i)
 ---------------------------------------------------------------------------------
 
-. 
-end of do-file
+. xtreg delta infraestructura puntaje_doctor tecnologia_alta precio, r
 
-. do "/var/folders/06/1jgdpt811cgbdsg2vx399sv00000gn/T//SD03967.000000"
-
-. xtreg delta infraestructura puntaje_doctor tecnologia_alta precio
-
-Random-effects GLS regression                   Number of obs     =        800
+Random-effects GLS regression                   Number of obs     =        677
 Group variable: panel_id                        Number of groups  =         80
 
 R-squared:                                      Obs per group:
-     Within  = 0.4027                                         min =         10
-     Between = 0.4314                                         avg =       10.0
-     Overall = 0.4068                                         max =         10
+     Within  = 0.7125                                         min =          5
+     Between = 0.5100                                         avg =        8.5
+     Overall = 0.5707                                         max =         10
 
-                                                Wald chi2(4)      =     538.50
+                                                Wald chi2(4)      =    1229.59
 corr(u_i, X) = 0 (assumed)                      Prob > chi2       =     0.0000
 
+                                 (Std. err. adjusted for 80 clusters in panel_id)
 ---------------------------------------------------------------------------------
-          delta | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+                |               Robust
+          delta | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
 ----------------+----------------------------------------------------------------
-infraestructura |   .3933011   .0293064    13.42   0.000     .3358617    .4507406
- puntaje_doctor |    .218828   .0428924     5.10   0.000     .1347604    .3028956
-tecnologia_alta |   .1093225   .1705798     0.64   0.522    -.2250077    .4436527
-         precio |  -.0864275   .0052394   -16.50   0.000    -.0966965   -.0761584
-          _cons |  -7.621093   .3636167   -20.96   0.000    -8.333769   -6.908417
+infraestructura |   .2413193   .0319369     7.56   0.000     .1787241    .3039144
+ puntaje_doctor |    .588283   .0343041    17.15   0.000     .5210481    .6555179
+tecnologia_alta |   2.469815   .0755063    32.71   0.000     2.321825    2.617804
+         precio |  -1.007035   .0333307   -30.21   0.000    -1.072362   -.9417076
+          _cons |  -.7291311   .3269975    -2.23   0.026    -1.370035   -.0882277
 ----------------+----------------------------------------------------------------
-        sigma_u |  .82050573
-        sigma_e |   1.609164
-            rho |  .20634515   (fraction of variance due to u_i)
+        sigma_u |  .46024138
+        sigma_e |  .32353787
+            rho |  .66926659   (fraction of variance due to u_i)
 ---------------------------------------------------------------------------------
 
 . 
-end of do-file
-
-. do "/var/folders/06/1jgdpt811cgbdsg2vx399sv00000gn/T//SD03967.000000"
-
+. ** SEGUNDA REGRESION
 . egen infraestructura_otros = mean(infraestructura), by(ciudad year)
 
 . replace infraestructura_otros = infraestructura_otros - infraestructura
-(800 real changes made)
+(800 real changes made, 123 to missing)
 
 . 
-end of do-file
+. egen puntaje_otros = mean(puntaje_doctor), by(ciudad year)
 
-. do "/var/folders/06/1jgdpt811cgbdsg2vx399sv00000gn/T//SD03967.000000"
+. replace puntaje_otros = puntaje_otros - puntaje_doctor
+(800 real changes made, 123 to missing)
 
-. ivreg2 delta (precio = infraestructura_otros puntaje_doctor) infraestructura puntaje_doctor
+. 
+. ivreg2 delta (precio = infraestructura_otros puntaje_doctor) infraestructura ///
+>         puntaje_doctor, r first
 Warning - duplicate variables detected
 Duplicates:         puntaje_doctor
+
+First-stage regressions
+-----------------------
+
+
+First-stage regression of precio:
+
+Statistics robust to heteroskedasticity
+Number of obs =                    677
+---------------------------------------------------------------------------------------
+                      |               Robust
+               precio | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------------+----------------------------------------------------------------
+infraestructura_otros |   .2638318    .116056     2.27   0.023     .0359565    .4917072
+      infraestructura |    .549493   .1094715     5.02   0.000     .3345462    .7644398
+       puntaje_doctor |   .6833687    .026014    26.27   0.000     .6322903     .734447
+                _cons |   1.396035   .7259706     1.92   0.055    -.0294045    2.821475
+---------------------------------------------------------------------------------------
+F test of excluded instruments:
+  F(  1,   673) =     5.17
+  Prob > F      =   0.0233
+Sanderson-Windmeijer multivariate F test of excluded instruments:
+  F(  1,   673) =     5.17
+  Prob > F      =   0.0233
+
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   673)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   673)
+precio       |       5.17    0.0233 |        5.20   0.0226 |        5.17
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=4.99     P-val=0.0255
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                       5.18
+Kleibergen-Paap Wald rk F statistic                                 5.17
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,673)=       4.26     P-val=0.0394
+Anderson-Rubin Wald test           Chi-sq(1)=      4.28     P-val=0.0385
+Stock-Wright LM S statistic        Chi-sq(1)=      4.27     P-val=0.0388
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        677
+Number of regressors                 K  =          4
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =          4
+Number of excluded instruments       L1 =          1
 
 IV (2SLS) estimation
 --------------------
 
 Estimates efficient for homoskedasticity only
-Statistics consistent for homoskedasticity only
+Statistics robust to heteroskedasticity
 
-                                                      Number of obs =      800
-                                                      F(  3,   796) =    53.62
+                                                      Number of obs =      677
+                                                      F(  3,   673) =    43.67
                                                       Prob > F      =   0.0000
-Total (centered) SS     =  4457.390017                Centered R2   =  -0.0436
-Total (uncentered) SS   =  18717.31681                Uncentered R2 =   0.7515
-Residual SS             =  4651.898983                Root MSE      =    2.411
+Total (centered) SS     =  543.9528976                Centered R2   =  -0.1188
+Total (uncentered) SS   =  13624.65214                Uncentered R2 =   0.9553
+Residual SS             =   608.558853                Root MSE      =    .9481
 
 ---------------------------------------------------------------------------------
-          delta | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+                |               Robust
+          delta | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
 ----------------+----------------------------------------------------------------
-         precio |   -.223717   .3349795    -0.67   0.504    -.8802646    .4328307
-infraestructura |   .3200904   .2404563     1.33   0.183    -.1511952     .791376
- puntaje_doctor |   .7901971   1.421032     0.56   0.578    -1.994974    3.575368
-          _cons |  -10.01723   5.714221    -1.75   0.080     -21.2169    1.182436
+         precio |  -.7889697   .4814633    -1.64   0.101     -1.73262     .154681
+infraestructura |   .6150956   .1603574     3.84   0.000     .3008009    .9293904
+ puntaje_doctor |   .6497159   .3274073     1.98   0.047     .0080093    1.291422
+          _cons |  -5.288817   1.418427    -3.73   0.000    -8.068883   -2.508751
 ---------------------------------------------------------------------------------
-Underidentification test (Anderson canon. corr. LM statistic):           0.377
-                                                   Chi-sq(1) P-val =    0.5393
+Underidentification test (Kleibergen-Paap rk LM statistic):              4.992
+                                                   Chi-sq(1) P-val =    0.0255
 ------------------------------------------------------------------------------
-Weak identification test (Cragg-Donald Wald F statistic):                0.375
+Weak identification test (Cragg-Donald Wald F statistic):                5.177
+                         (Kleibergen-Paap rk Wald F statistic):          5.168
 Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
                                          15% maximal IV size              8.96
                                          20% maximal IV size              6.66
                                          25% maximal IV size              5.53
 Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
 ------------------------------------------------------------------------------
-Sargan statistic (overidentification test of all instruments):           0.000
+Hansen J statistic (overidentification test of all instruments):         0.000
                                                  (equation exactly identified)
 ------------------------------------------------------------------------------
 Instrumented:         precio
@@ -1197,6 +1212,134 @@ Excluded instruments: infraestructura_otros
 Duplicates:           puntaje_doctor
 ------------------------------------------------------------------------------
 
+. ivreg2 delta (precio = infraestructura_otros puntaje_doctor) infraestructura ///
+>         puntaje_doctor tecnologia_alta, r first
+Warning - duplicate variables detected
+Duplicates:         puntaje_doctor
+
+First-stage regressions
+-----------------------
+
+
+First-stage regression of precio:
+
+Statistics robust to heteroskedasticity
+Number of obs =                    677
+---------------------------------------------------------------------------------------
+                      |               Robust
+               precio | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+----------------------+----------------------------------------------------------------
+infraestructura_otros |  -.0454647   .0692721    -0.66   0.512    -.1814805     .090551
+      infraestructura |  -.1047672   .0695605    -1.51   0.133    -.2413492    .0318148
+       puntaje_doctor |   .5148034   .0189485    27.17   0.000      .477598    .5520088
+      tecnologia_alta |   2.075761   .0556599    37.29   0.000     1.966472    2.185049
+                _cons |   6.461025   .4441448    14.55   0.000     5.588946    7.333103
+---------------------------------------------------------------------------------------
+F test of excluded instruments:
+  F(  1,   672) =     0.43
+  Prob > F      =   0.5118
+Sanderson-Windmeijer multivariate F test of excluded instruments:
+  F(  1,   672) =     0.43
+  Prob > F      =   0.5118
+
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   672)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   672)
+precio       |       0.43    0.5118 |        0.43   0.5101 |        0.43
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=0.44     P-val=0.5089
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                       0.44
+Kleibergen-Paap Wald rk F statistic                                 0.43
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,672)=      10.03     P-val=0.0016
+Anderson-Rubin Wald test           Chi-sq(1)=     10.10     P-val=0.0015
+Stock-Wright LM S statistic        Chi-sq(1)=      9.91     P-val=0.0016
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        677
+Number of regressors                 K  =          5
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =          5
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      677
+                                                      F(  4,   672) =     2.67
+                                                      Prob > F      =   0.0310
+Total (centered) SS     =  543.9528976                Centered R2   = -16.9603
+Total (uncentered) SS   =  13624.65214                Uncentered R2 =   0.2830
+Residual SS             =  9769.545399                Root MSE      =    3.799
+
+---------------------------------------------------------------------------------
+                |               Robust
+          delta | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+         precio |   6.765126   11.80805     0.57   0.567    -16.37823    29.90848
+infraestructura |   .6800222    .748371     0.91   0.364    -.7867579    2.146802
+ puntaje_doctor |  -3.426334   6.069066    -0.56   0.572    -15.32148    8.468816
+tecnologia_alta |  -13.37556   24.45548    -0.55   0.584    -61.30741     34.5563
+          _cons |  -48.47182   73.10608    -0.66   0.507    -191.7571    94.81346
+---------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):              0.436
+                                                   Chi-sq(1) P-val =    0.5089
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):                0.445
+                         (Kleibergen-Paap rk Wald F statistic):          0.431
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         precio
+Included instruments: infraestructura puntaje_doctor tecnologia_alta
+Excluded instruments: infraestructura_otros
+Duplicates:           puntaje_doctor
+------------------------------------------------------------------------------
+
 . 
 end of do-file
 
+. exit, clear
